@@ -9,8 +9,8 @@ import { ref } from "vue";
 const authStore = useAuthStore();
 
 const pageTitle = ref("Log In");
-const email = ref("huisicter@haaguit.com");
-const password = ref("SomethingDifficult");
+const email = ref("");
+const password = ref("");
 function login() {
   authStore.login(email.value, password.value);
 }
