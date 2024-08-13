@@ -5,6 +5,7 @@ import DefaultLayout from "@/layouts/DefaultLayout.vue";
 import { ref, computed, defineProps, onMounted } from "vue";
 import apiClient from "@/http";
 import router from "@/router";
+import type { EditUser } from "@/views/User/user.types";
 
 const props = defineProps({
   ID: Number,

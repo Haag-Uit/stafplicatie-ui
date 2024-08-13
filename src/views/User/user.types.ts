@@ -1,5 +1,5 @@
 interface User {
-  id: number;
+  ID: number;
   email: string;
   role: string;
   createdAt: string;
@@ -20,3 +20,5 @@ interface EditUser {
   password: string;
   confirmPassword: string;
 }
+
+export type { User, CreateUser, EditUser };

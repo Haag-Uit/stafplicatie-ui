@@ -5,8 +5,8 @@
   </div>
 </template>
 
-<script setup>
-import { ref, onMounted, onBeforeUnmount } from "vue";
+<script setup lang="ts">
+import { ref, onMounted } from "vue";
 
 const props = defineProps({
   message: String,

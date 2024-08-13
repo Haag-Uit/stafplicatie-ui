@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, computed } from "vue";
 import apiClient from "@/http";
-import type { User } from "@/types";
+import type { User } from "@/views/User/user.types";
 
 const users = ref<User[]>([]);
 
@@ -56,7 +56,7 @@ const sortedUsers = computed(() => {
                 <router-link
                   :to="{
                     name: 'userEdit',
-                    params: { ID: user.id },
+                    params: { ID: user.ID },
                   }"
                   class="flex"
                 >

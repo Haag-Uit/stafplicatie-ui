@@ -2,7 +2,7 @@
 import { ref, computed } from "vue";
 import apiClient from "@/http";
 import moment from "moment";
-import type { Campyear } from "@/types";
+import type { Campyear } from "@/views/Campyear/campyear.types";
 
 const campyears = ref<Campyear[]>([]);
 const sortedCampyears = computed(() => {

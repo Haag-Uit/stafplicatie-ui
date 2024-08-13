@@ -5,6 +5,7 @@ import DefaultLayout from "@/layouts/DefaultLayout.vue";
 import { ref } from "vue";
 import apiClient from "@/http";
 import router from "@/router";
+import type { CreateUser } from "@/views/User/user.types";
 
 const pageTitle = ref("Gebruiker aanmaken");
 const user = ref<CreateUser>({
@@ -14,7 +15,6 @@ const user = ref<CreateUser>({
   confirmPassword: "",
 });
 const error = ref("");
-const confirmPassword = ref("");
 
 function createUser() {
   apiClient

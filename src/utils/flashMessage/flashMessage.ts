@@ -1,6 +1,6 @@
 // import { FlashMessageOptions } from "./types.d";
 import { render, h } from "vue";
-import FlashMessage from "./FlashMessage.vue";
+import FlashMessage from "@/utils/flashMessage/FlashMessage.vue";
 import "./style.css";
 
 interface FlashMessageOptions {
@@ -34,4 +34,5 @@ function useNotification() {
   return { success };
 }
 
-export { notify, useNotification, FlashMessageOptions };
+export { notify, useNotification };
+export type { FlashMessageOptions };

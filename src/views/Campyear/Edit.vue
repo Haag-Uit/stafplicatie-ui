@@ -8,22 +8,40 @@ import moment from "moment";
 import router from "@/router";
 import flatpickr from "flatpickr";
 import { Dutch } from "flatpickr/dist/l10n/nl.js";
+import type { Campyear } from "@/views/Campyear/campyear.types";
 
 const props = defineProps({
   year: Number,
 });
 
 const pageTitle = computed(() => `Kampjaar ${props.year} aanpassen`);
-const campyear = ref({});
+const campyear = ref<Campyear>({
+  ID: 0,
+  year: 0,
+  start: "",
+  end: "",
+  participationFee: 0,
+  insuranceFee: 0,
+  active: false,
+  open: false,
+  CreatedAt: "",
+  UpdatedAt: "",
+});
 const error = ref("");
 
 onMounted(() => {
   apiClient.get(`/stafplicatie/v1/campyear/${props.year}`).then((response) => {
     campyear.value = {
+      ID: response.data.id,
+      year: response.data.year,
       start: moment(response.data.start).format("YYYY-MM-DD"),
       end: moment(response.data.end).format("YYYY-MM-DD"),
       participationFee: response.data.participation_fee,
       insuranceFee: response.data.insurance_fee,
+      active: response.data.active,
+      open: response.data.open,
+      CreatedAt: response.data.created_at,
+      UpdatedAt: response.data.updated_at,
     };
     initDatepickers();
   });
