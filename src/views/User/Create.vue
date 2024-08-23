@@ -19,7 +19,7 @@ const error = ref("");
 function createUser() {
   apiClient
     .post("/stafplicatie/v1/user", user.value)
-    .then((response) => {
+    .then(() => {
       router.push("/user");
     })
     .catch((err) => {

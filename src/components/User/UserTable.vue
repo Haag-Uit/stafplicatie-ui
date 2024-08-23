@@ -14,11 +14,22 @@ const sortedUsers = computed(() => {
     return a.email.localeCompare(b.email);
   });
 });
+
+function deleteUser(id: number) {
+  apiClient
+    .delete(`/stafplicatie/v1/user/${id}`)
+    .then(() => {
+      users.value = users.value.filter((user) => user.id !== id);
+    })
+    .catch((err) => {
+      console.error(err);
+    });
+}
 </script>
 
 <template>
   <div
-    class="rounded-sm border border-stroke bg-white px-5 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1"
+    class="rounded-sm border border-stroke bg-white px-5 py-6 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5"
   >
     <div class="max-w-full overflow-x-auto">
       <table class="w-full table-auto">
@@ -40,7 +51,7 @@ const sortedUsers = computed(() => {
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(user, index) in sortedUsers" :key="user.ID">
+          <tr v-for="(user, index) in sortedUsers" :key="user.id">
             <td class="py-5 px-4 xl:pl-11">
               <h5 class="font-medium text-black dark:text-white">
                 {{ user.email }}
@@ -56,7 +67,7 @@ const sortedUsers = computed(() => {
                 <router-link
                   :to="{
                     name: 'userEdit',
-                    params: { ID: user.ID },
+                    params: { id: user.id },
                   }"
                   class="flex"
                 >
@@ -84,7 +95,7 @@ const sortedUsers = computed(() => {
                   </button>
                 </router-link>
 
-                <button @click="" class="hover:text-primary">
+                <button @click="deleteUser(user.id)" class="hover:text-primary">
                   <svg
                     class="fill-current"
                     width="18"

@@ -10,7 +10,7 @@ onClickOutside(target, () => {
   dropdownOpen.value = false;
 });
 
-import userOne from "@/assets/images/user/user-01.png";
+import userOne from "@/assets/images/user/generic-pf.png";
 
 const messagesList = ref([
   {

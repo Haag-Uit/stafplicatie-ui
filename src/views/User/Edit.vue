@@ -8,7 +8,7 @@ import router from "@/router";
 import type { EditUser } from "@/views/User/user.types";
 
 const props = defineProps({
-  ID: Number,
+  id: Number,
 });
 
 const pageTitle = computed(() => `Gebruiker bewerken`);
@@ -21,14 +21,14 @@ const user = ref<EditUser>({
 const error = ref("");
 
 onMounted(() => {
-  apiClient.get(`/stafplicatie/v1/user/${props.ID}`).then((response) => {
+  apiClient.get(`/stafplicatie/v1/user/${props.id}`).then((response) => {
     user.value = response.data;
   });
 });
 
 function updateUser() {
   apiClient
-    .put(`/stafplicatie/v1/user/${props.ID}`, user.value)
+    .put(`/stafplicatie/v1/user/${props.id}`, user.value)
     .then(() => {
       router.push("/user");
     })
