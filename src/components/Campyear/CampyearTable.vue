@@ -27,7 +27,7 @@ function toggleOpen(campyear: any) {
   } else {
     apiClient
       .post(`/stafplicatie/v1/campyear/${campyear.year}/open`)
-      .then((response) => {
+      .then(() => {
         campyear.open = !campyear.open;
       });
   }
@@ -35,7 +35,7 @@ function toggleOpen(campyear: any) {
 function makeActive(campyear: any) {
   apiClient
     .post(`/stafplicatie/v1/campyear/${campyear.year}/activate`)
-    .then((response) => {
+    .then(() => {
       campyears.value.forEach((cy: Campyear) => {
         if (cy.active) {
           cy.active = false;
@@ -182,7 +182,8 @@ function deleteCampyear(index: number) {
                 >
                   <button class="hover:text-primary">
                     <svg
-                      fill="#1C2033"
+                      class="fill-current"
+                      fill="none"
                       width="18"
                       height="18"
                       version="1.1"
