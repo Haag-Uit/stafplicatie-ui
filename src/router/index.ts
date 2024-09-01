@@ -11,6 +11,9 @@ import UserIndex from "@/views/User/Index.vue";
 import UserCreate from "@/views/User/Create.vue";
 import UserEdit from "@/views/User/Edit.vue";
 
+import CampRegistationIndex from "@/views/CampRegistration/Index.vue";
+import CampRegistrationEdit from "@/views/CampRegistration/Edit.vue";
+
 import Dashboard from "@/views/Dashboard/Dashboard.vue";
 import SettingsView from "@/views/Pages/SettingsView.vue";
 
@@ -70,6 +73,23 @@ const routes = [
     component: UserEdit,
     meta: {
       title: "Gebruker wijzigen",
+    },
+    props: true,
+  },
+  {
+    path: "/registration",
+    name: "campRegistration",
+    component: CampRegistationIndex,
+    meta: {
+      title: "Inschrijvingen",
+    },
+  },
+  {
+    path: "/registration/:id",
+    name: "campRegistrationEdit",
+    component: CampRegistrationEdit,
+    meta: {
+      title: "Inschrijving wijzigen",
     },
     props: true,
   },
