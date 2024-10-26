@@ -73,7 +73,7 @@ const sortedReg = computed(() => {
                 {{ reg.firstName }} {{ reg.lastName }}
               </h5>
             </td>
-            <td class="py-5 px-4 xl:pl-11">
+            <td class="py-5 px-4">
               <h5 class="font-medium text-black dark:text-white">
                 {{ reg.email }}
               </h5>
