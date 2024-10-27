@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const props = defineProps(["label", "type", "placeholder"]);
+const props = defineProps(["label", "type", "placeholder", "required"]);
 const inputModel = defineModel();
 </script>
 
@@ -13,6 +13,7 @@ const inputModel = defineModel();
         :type="props.type"
         :placeholder="props.placeholder"
         v-model="inputModel"
+        :required="props.required == 'true'"
         class="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary text-black dark:text-white"
       />
 

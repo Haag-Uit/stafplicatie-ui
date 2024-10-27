@@ -1,18 +1,33 @@
 <script setup lang="ts">
 import DefaultAuthCard from "@/components/Auths/DefaultAuthCard.vue";
 import InputGroup from "@/components/Auths/InputGroup.vue";
-import BreadcrumbDefault from "@/components/Breadcrumbs/BreadcrumbDefault.vue";
+import apiClient from "@/http";
 import DefaultLayout from "@/layouts/DefaultLayout.vue";
+import router from "@/router";
 import { useAuthStore } from "@/stores/auth";
 import { ref } from "vue";
 
 const authStore = useAuthStore();
 
-const pageTitle = ref("Log In");
 const email = ref("");
 const password = ref("");
+const errorText = ref("");
+
 function login() {
-  authStore.login(email.value, password.value);
+  apiClient
+    .post(
+      "/auth/v1/login",
+      { email: email.value, password: password.value },
+      { baseURL: import.meta.env.VITE_BASE_URL }
+    )
+    .then((response) => {
+      authStore.login(response.data.token);
+      router.push("/");
+    })
+    .catch((error) => {
+      console.log(error.response.data.error);
+      errorText.value = error.response.data.error;
+    });
 }
 </script>
 
@@ -25,6 +40,7 @@ function login() {
           type="email"
           placeholder="Email"
           v-model="email"
+          required="true"
         >
           <svg
             class="fill-current"
@@ -48,6 +64,7 @@ function login() {
           type="password"
           placeholder="Wachtwoord"
           v-model="password"
+          required="true"
         >
           <svg
             class="fill-current"
@@ -76,6 +93,11 @@ function login() {
             value="Log in"
             class="w-full cursor-pointer rounded-lg border border-primary bg-primary p-4 font-medium text-white transition hover:bg-opacity-90"
           />
+        </div>
+        <div>
+          <p class="text-center text-danger" v-if="errorText">
+            {{ errorText }}
+          </p>
         </div>
       </form>
     </DefaultAuthCard>
