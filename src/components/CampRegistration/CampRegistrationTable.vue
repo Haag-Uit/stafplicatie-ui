@@ -79,17 +79,30 @@ const sortedReg = computed(() => {
               </h5>
             </td>
             <td class="py-5 px-4">
-              <p class="text-black dark:text-white">
+              <p class="text-black dark:text-white" style="text-transform: capitalize;">
                 {{ reg.typeOfPayment }}
               </p>
             </td>
             <td class="py-5 px-4">
               <p class="text-black dark:text-white">
-                {{ reg.status }}
+                <div
+                  class="inline-flex rounded-full py-1 px-3 text-sm font-medium hover:bg-opacity-90 text-white"
+                  style="background-color: rgb(249, 193, 7); text-transform: capitalize;"
+                  v-if="reg.status !== 'betaald' && reg.status !== 'paid'"
+                >
+                  {{ reg.status }}
+                </div>
+                <div
+                  class="inline-flex rounded-full py-1 px-3 text-sm font-medium hover:bg-opacity-90 text-white"
+                  style="background-color: rgb(60, 167, 69)"
+                  v-if="reg.status === 'betaald' || reg.status === 'paid'"
+                >
+                  Betaald
+                </div>
               </p>
             </td>
             <td class="py-5 px-4">
-              <p class="text-black dark:text-white">
+              <p class="text-black dark:text-white" style="text-transform: capitalize;">
                 {{ reg.attendance }}
               </p>
             </td>
