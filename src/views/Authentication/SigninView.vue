@@ -5,13 +5,19 @@ import apiClient from "@/http";
 import DefaultLayout from "@/layouts/DefaultLayout.vue";
 import router from "@/router";
 import { useAuthStore } from "@/stores/auth";
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 
 const authStore = useAuthStore();
 
 const email = ref("");
 const password = ref("");
 const errorText = ref("");
+
+onMounted(() => {
+  if (authStore.isAuthenticated) {
+    router.push("/");
+  }
+});
 
 function login() {
   apiClient

@@ -23,7 +23,7 @@ const routes = [
     name: "dashboard",
     component: Dashboard,
     meta: {
-      title: "eCommerce Dashboard",
+      title: "Dashboard",
     },
   },
   {
