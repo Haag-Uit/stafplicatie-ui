@@ -1,26 +1,34 @@
 <script setup lang="ts">
 import { ref, computed } from "vue";
 import apiClient from "@/http";
+import type { Volunteer } from "@/views/Volunteer/volunteer.types";
 
-interface CampRegistrationTableRow {
+interface VolunteerTableRow {
   id: number;
   firstName: string;
   lastName: string;
   email: string;
-  typeOfPayment: string;
-  status: string;
-  attendance: string;
+  phone: string;
 }
 
-const registrations = ref<CampRegistrationTableRow[]>([]);
+const registrations = ref<VolunteerTableRow[]>([]);
 
-apiClient.get("/stafplicatie/v1/registration").then((response) => {
-  registrations.value = response.data;
+apiClient.get("/stafplicatie/v1/volunteer").then((response) => {
+  // registrations.value = response.data;
+  response.data.forEach((reg: Volunteer) => {
+    registrations.value.push({
+      id: reg.id,
+      firstName: reg.person.firstName,
+      lastName: reg.person.lastName,
+      email: reg.person.email,
+      phone: reg.person.mobile,
+    });
+  });
 });
 
 const sortedReg = computed(() => {
   return registrations.value.sort(
-    (a: CampRegistrationTableRow, b: CampRegistrationTableRow) => {
+    (a: VolunteerTableRow, b: VolunteerTableRow) => {
       return a.firstName.localeCompare(b.firstName);
     }
   );
@@ -48,17 +56,7 @@ const sortedReg = computed(() => {
             <th
               class="min-w-[150px] py-4 px-4 font-medium text-black dark:text-white"
             >
-              Methode
-            </th>
-            <th
-              class="min-w-[150px] py-4 px-4 font-medium text-black dark:text-white"
-            >
-              Status
-            </th>
-            <th
-              class="min-w-[150px] py-4 px-4 font-medium text-black dark:text-white"
-            >
-              Presentie
+              Telefoon
             </th>
             <th class="py-4 px-4 font-medium text-black dark:text-white">
               Actions
@@ -78,38 +76,18 @@ const sortedReg = computed(() => {
               </h5>
             </td>
             <td class="py-5 px-4">
-              <p class="text-black dark:text-white" style="text-transform: capitalize;">
-                {{ reg.typeOfPayment }}
-              </p>
-            </td>
-            <td class="py-5 px-4">
-              <p class="text-black dark:text-white">
-                <div
-                  class="inline-flex rounded-full py-1 px-3 text-sm font-medium hover:bg-opacity-90 text-white"
-                  style="background-color: rgb(249, 193, 7); text-transform: capitalize;"
-                  v-if="reg.status !== 'betaald' && reg.status !== 'paid'"
-                >
-                  {{ reg.status }}
-                </div>
-                <div
-                  class="inline-flex rounded-full py-1 px-3 text-sm font-medium hover:bg-opacity-90 text-white"
-                  style="background-color: rgb(60, 167, 69)"
-                  v-if="reg.status === 'betaald' || reg.status === 'paid'"
-                >
-                  Betaald
-                </div>
-              </p>
-            </td>
-            <td class="py-5 px-4">
-              <p class="text-black dark:text-white" style="text-transform: capitalize;">
-                {{ reg.attendance }}
+              <p
+                class="text-black dark:text-white"
+                style="text-transform: capitalize"
+              >
+                {{ reg.phone }}
               </p>
             </td>
             <td class="py-5 px-4">
               <div class="flex items-center space-x-3.5">
                 <router-link
                   :to="{
-                    name: 'campRegistrationEdit',
+                    name: 'volunteerEdit',
                     params: { id: reg.id },
                   }"
                   class="flex"

@@ -51,7 +51,7 @@ function deleteUser(id: number) {
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(user, index) in sortedUsers" :key="user.id">
+          <tr v-for="user in sortedUsers" :key="user.id">
             <td class="py-5 px-4 xl:pl-11">
               <h5 class="font-medium text-black dark:text-white">
                 {{ user.email }}

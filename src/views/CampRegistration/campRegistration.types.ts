@@ -16,6 +16,20 @@ interface Person {
   deletedAt: string;
 }
 
+interface CreatePerson {
+  firstName: string;
+  lastName: string;
+  dateOfBirth: string;
+  email: string;
+  gender: string;
+  mobile: string;
+  street: string;
+  houseNumber: string;
+  zipCode: string;
+  city: string;
+  emergencyContact: string;
+}
+
 interface CampRegistration {
   id: number;
   personId: number;
@@ -52,4 +66,10 @@ interface EditRegistration {
   shirtSize: string;
 }
 
-export type { Person, CampRegistration, Payment, EditRegistration };
+export type {
+  Person,
+  CreatePerson,
+  CampRegistration,
+  Payment,
+  EditRegistration,
+};

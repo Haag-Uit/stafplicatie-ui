@@ -11,6 +11,10 @@ import UserIndex from "@/views/User/Index.vue";
 import UserCreate from "@/views/User/Create.vue";
 import UserEdit from "@/views/User/Edit.vue";
 
+import VolunteerIndex from "@/views/Volunteer/Index.vue";
+import VolunteerCreate from "@/views/Volunteer/Create.vue";
+import VolunteerEdit from "@/views/Volunteer/Edit.vue";
+
 import CampRegistationIndex from "@/views/CampRegistration/Index.vue";
 import CampRegistrationEdit from "@/views/CampRegistration/Edit.vue";
 
@@ -73,6 +77,31 @@ const routes = [
     component: UserEdit,
     meta: {
       title: "Gebruker wijzigen",
+    },
+    props: true,
+  },
+  {
+    path: "/volunteer",
+    name: "volunteer",
+    component: VolunteerIndex,
+    meta: {
+      title: "Medewerkers",
+    },
+  },
+  {
+    path: "/volunteer/create",
+    name: "volunteerCreate",
+    component: VolunteerCreate,
+    meta: {
+      title: "Medewerker aanmaken",
+    },
+  },
+  {
+    path: "/volunteer/:id",
+    name: "volunteerEdit",
+    component: VolunteerEdit,
+    meta: {
+      title: "Medewerker wijzigen",
     },
     props: true,
   },
