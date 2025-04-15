@@ -13,7 +13,7 @@ const initiateClient = async () => {
   try {
     const accessToken = await auth0.getAccessTokenSilently();
     client.setConfig({
-      baseUrl: "http://localhost:8080",
+      baseUrl: import.meta.env.VITE_API_URL,
       headers: {
         Authorization: `Bearer ${accessToken}`,
       },
