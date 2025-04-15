@@ -1,17 +1,26 @@
-import "./assets/css/satoshi.css";
-import "./assets/css/style.css";
-import "flatpickr/dist/flatpickr.min.css";
+import "./assets/main.css";
 
 import { createApp } from "vue";
 import { createPinia } from "pinia";
-import VueApexCharts from "vue3-apexcharts";
+import { createAuth0 } from "@auth0/auth0-vue";
 
 import App from "./App.vue";
-import router from "./router";
+import { createVueRouter } from "./router";
 
 const app = createApp(App);
-app.use(createPinia());
-app.use(router);
-app.use(VueApexCharts);
 
+app.use(createPinia());
+app.use(createVueRouter(app));
+
+app.use(
+  createAuth0({
+    domain: "dev-haaguit.eu.auth0.com",
+    clientId: "E7G4Jj4FadD2e8tld15pLrhxgEwb52x1",
+    authorizationParams: {
+      redirect_uri: window.location.origin,
+      audience: "http://localhost:8080", // Important for access tokens!
+      scope: "openid profile email ",
+    },
+  })
+);
 app.mount("#app");
