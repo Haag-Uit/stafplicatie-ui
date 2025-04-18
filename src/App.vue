@@ -2,9 +2,9 @@
 import { ref, onMounted, watch, computed } from "vue";
 import { useAuth0 } from "@auth0/auth0-vue";
 import { client } from "./client";
-import { LayoutDashboard } from "lucide-vue-next";
+import { CalendarDays, LayoutDashboard } from "lucide-vue-next";
 import SidebarFooter from "./components/layout/SidebarFooter.vue";
-
+import ToastrContainer from "./components/ToastrContainer.vue";
 const auth0 = useAuth0();
 
 const clientReady = ref(false);
@@ -82,9 +82,12 @@ watch(
               Stafplicatie
             </div>
             <ul class="menu w-full">
-              <li class="menu-title">General</li>
+              <li class="menu-title">Algemeen</li>
               <li>
-                <a><LayoutDashboard /> Dashboard</a>
+                <RouterLink to="/"><LayoutDashboard /> Dashboard</RouterLink>
+                <RouterLink to="/kampjaar">
+                  <CalendarDays /> Kampjaren
+                </RouterLink>
               </li>
             </ul>
           </div>
@@ -153,6 +156,7 @@ watch(
         <RouterView />
       </main>
     </div>
+    <ToastrContainer />
   </div>
 </template>
 
