@@ -109,7 +109,11 @@
 </template>
 
 <script setup lang="ts">
-import { createCampyear } from "@/client";
+import {
+  createCampyear,
+  type CreateCampyearError,
+  type response_ApiError,
+} from "@/client";
 import { ref } from "vue";
 import { useToastStore } from "@/stores/toastr";
 import { useRouter } from "vue-router";
@@ -141,7 +145,14 @@ const create = async () => {
   });
   if (error) {
     console.error("Error creating camp year:", error.message);
-    errorMsg.value.error = error.error;
+    if ((error as CreateCampyearError).fields) {
+      errorMsg.value.error = (error as response_ApiError).fields!;
+    } else {
+      toastStore.addToast({
+        message: `Fout bij het aanmaken van kampjaar. ${error.message}.`,
+        type: "error",
+      });
+    }
     return;
   }
   console.log("Camp year created:", data);
@@ -150,7 +161,6 @@ const create = async () => {
     type: "success",
   });
   router.push({ name: "campyearIndex" });
-  // Handle success (e.g., show a success message, redirect, etc.)
 };
 </script>
 

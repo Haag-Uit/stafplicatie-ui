@@ -45,6 +45,18 @@ export type request_UpdatePaymentRequest = {
     payment_status?: 'paid';
 };
 
+export type response_ApiError = {
+    code: string;
+    description: string;
+    fields?: {
+        [key: string]: (string);
+    };
+    message: string;
+    meta?: {
+        [key: string]: (string);
+    };
+};
+
 export type response_CampyearResponse = {
     active?: boolean;
     end?: string;
@@ -94,7 +106,7 @@ export type CreateCampyearData = {
 
 export type CreateCampyearResponse = (response_CampyearResponse);
 
-export type CreateCampyearError = (string);
+export type CreateCampyearError = (response_ApiError);
 
 export type GetCampyearData = {
     path: {
@@ -107,7 +119,7 @@ export type GetCampyearData = {
 
 export type GetCampyearResponse = (response_CampyearResponse);
 
-export type GetCampyearError = (string);
+export type GetCampyearError = (response_ApiError);
 
 export type UpdateCampyearData = {
     /**
@@ -124,7 +136,7 @@ export type UpdateCampyearData = {
 
 export type UpdateCampyearResponse = (response_CampyearResponse);
 
-export type UpdateCampyearError = (string);
+export type UpdateCampyearError = (response_ApiError);
 
 export type DeleteCampyearData = {
     path: {
@@ -137,7 +149,7 @@ export type DeleteCampyearData = {
 
 export type DeleteCampyearResponse = (string);
 
-export type DeleteCampyearError = (string);
+export type DeleteCampyearError = (response_ApiError);
 
 export type ActivateCampyearData = {
     path: {
@@ -150,7 +162,7 @@ export type ActivateCampyearData = {
 
 export type ActivateCampyearResponse = (string);
 
-export type ActivateCampyearError = (string);
+export type ActivateCampyearError = (response_ApiError);
 
 export type CloseCampyearData = {
     path: {
@@ -163,7 +175,7 @@ export type CloseCampyearData = {
 
 export type CloseCampyearResponse = (string);
 
-export type CloseCampyearError = (string);
+export type CloseCampyearError = (response_ApiError);
 
 export type OpenCampyearData = {
     path: {
@@ -176,7 +188,7 @@ export type OpenCampyearData = {
 
 export type OpenCampyearResponse = (string);
 
-export type OpenCampyearError = (string);
+export type OpenCampyearError = (response_ApiError);
 
 export type ExportParticipantsResponse = ((Blob | File));
 

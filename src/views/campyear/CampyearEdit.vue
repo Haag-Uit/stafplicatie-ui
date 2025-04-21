@@ -97,7 +97,12 @@
 </template>
 
 <script setup lang="ts">
-import { getCampyear, updateCampyear, type UpdateCampyearData } from "@/client";
+import {
+  getCampyear,
+  updateCampyear,
+  type UpdateCampyearData,
+  type UpdateCampyearError,
+} from "@/client";
 import { onMounted, ref } from "vue";
 import { useToastStore } from "@/stores/toastr";
 import { useRouter } from "vue-router";
@@ -155,7 +160,9 @@ const save = async () => {
   const { data, error } = await updateCampyear(req);
   if (error) {
     console.error("Error updating camp year:", error.message);
-    errorMsg.value.error = error.fields;
+    if ((error as UpdateCampyearError).fields) {
+      errorMsg.value.error = (error as UpdateCampyearError).fields!;
+    }
     return;
   }
   toastStore.addToast({
