@@ -155,7 +155,6 @@ const create = async () => {
     }
     return;
   }
-  console.log("Camp year created:", data);
   toastStore.addToast({
     message: `Kampjaar ${data.year} aangemaakt`,
     type: "success",

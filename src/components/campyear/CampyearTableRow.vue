@@ -62,6 +62,10 @@ const deleteRow = async () => {
     });
     return;
   }
+  toastStore.addToast({
+    message: `Kampjaar ${props.campyear.year} verwijderd`,
+    type: "success",
+  });
 };
 </script>
 
