@@ -8,6 +8,7 @@ import ToastrContainer from "./components/ToastrContainer.vue";
 const auth0 = useAuth0();
 
 const clientReady = ref(false);
+const auth0Error = ref({});
 
 const initiateClient = async () => {
   try {
@@ -20,6 +21,7 @@ const initiateClient = async () => {
     });
     clientReady.value = true;
   } catch (error) {
+    auth0Error.value = auth0.error;
     console.error("Error setting access token:", error);
   }
 };

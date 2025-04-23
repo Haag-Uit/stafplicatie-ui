@@ -10,7 +10,7 @@ onMounted(async () => {
   try {
     const resp = await getAllCampyears();
     activeCampyear.value = resp.data.find(
-      (yr: response_CampyearResponse) => yr.active === true
+      (yr: response_CampyearResponse) => yr.active === true,
     );
     isLoading.value = false;
   } catch (error) {
