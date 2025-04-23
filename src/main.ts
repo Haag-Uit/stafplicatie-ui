@@ -14,11 +14,11 @@ app.use(createVueRouter(app));
 
 app.use(
   createAuth0({
-    domain: "dev-haaguit.eu.auth0.com",
-    clientId: "E7G4Jj4FadD2e8tld15pLrhxgEwb52x1",
+    domain: import.meta.env.VITE_AUTH0_DOMAIN,
+    clientId: import.meta.env.VITE_AUTH0_CLIENT_ID,
     authorizationParams: {
       redirect_uri: window.location.origin,
-      audience: "http://localhost:8080", // Important for access tokens!
+      audience: import.meta.env.VITE_AUTH0_AUDIENCE, // Important for access tokens!
       scope: "openid profile email ",
     },
   })
