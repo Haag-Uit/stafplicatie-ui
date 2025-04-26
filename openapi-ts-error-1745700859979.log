@@ -1,0 +1,11 @@
+Error requesting http://localhost:8080/swagger/doc.json 
+HTTP ERROR 404
+ResolverError: Error requesting http://localhost:8080/swagger/doc.json 
+HTTP ERROR 404
+    at Object.sendRequest (/Users/clewij/hobby/haaguit/stafplicatie-ui/node_modules/@hey-api/json-schema-ref-parser/dist/lib/resolvers/url.js:39:15)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async xf (/Users/clewij/hobby/haaguit/stafplicatie-ui/node_modules/@hey-api/openapi-ts/dist/index.cjs:1328:8055)
+    at async n (/Users/clewij/hobby/haaguit/stafplicatie-ui/node_modules/@hey-api/openapi-ts/dist/index.cjs:1328:10286)
+    at async Promise.all (index 0)
+    at async cA (/Users/clewij/hobby/haaguit/stafplicatie-ui/node_modules/@hey-api/openapi-ts/dist/index.cjs:1328:11119)
+    at async start (/Users/clewij/hobby/haaguit/stafplicatie-ui/node_modules/@hey-api/openapi-ts/bin/index.cjs:113:21)
