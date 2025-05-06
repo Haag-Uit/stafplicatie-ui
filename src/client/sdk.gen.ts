@@ -111,7 +111,7 @@ export const exportParticipants = <ThrowOnError extends boolean = false>(options
 export const getAllParticipants = <ThrowOnError extends boolean = false>(options?: OptionsLegacyParser<unknown, ThrowOnError>) => {
     return (options?.client ?? client).get<GetAllParticipantsResponse, GetAllParticipantsError, ThrowOnError>({
         ...options,
-        url: '/participant/api/v1'
+        url: '/participant/api/v1/'
     });
 };
 

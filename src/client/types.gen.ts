@@ -38,7 +38,8 @@ export type request_UpdateCampyearRequest = {
 };
 
 export type request_UpdateParticipantRequest = {
-    attendance?: 'open' | 'closed';
+    attendance?: 'open' | 'aanwezig' | 'afwezig' | 'afgemeld';
+    shirt_size?: 'XS' | 'S' | 'M' | 'L' | 'XL';
 };
 
 export type request_UpdatePaymentRequest = {
@@ -68,29 +69,56 @@ export type response_CampyearResponse = {
 };
 
 export type response_ParticipantResponse = {
-    email?: string;
-    first_name?: string;
-    id?: number;
-    last_name?: string;
+    attendance: string;
+    campyear_year: number;
+    comment?: string;
+    created_at: string;
+    id: number;
+    insurance: boolean;
+    payments?: Array<response_PaymentResponse>;
+    person: response_PersonResponse;
+    shirt_size: string;
+    study: string;
 };
 
 export type response_ParticipantWithLatestPaymentResponse = {
-    email?: string;
-    first_name?: string;
-    id?: number;
-    last_name?: string;
-    payment?: response_PaymentResponse;
+    attendance: string;
+    campyear_year: number;
+    comment?: string;
+    created_at: string;
+    id: number;
+    insurance: boolean;
+    latest_payment?: response_PaymentResponse;
+    payments?: Array<response_PaymentResponse>;
+    person: response_PersonResponse;
+    shirt_size: string;
+    study: string;
 };
 
 export type response_PaymentResponse = {
     account_city?: string;
     account_name?: string;
     account_number?: string;
-    amount?: number;
-    id?: number;
-    payment_id?: string;
-    payment_method?: string;
-    payment_status?: string;
+    amount: number;
+    created_at: string;
+    id: number;
+    payment_id: string;
+    payment_method: string;
+    payment_status: string;
+};
+
+export type response_PersonResponse = {
+    address: string;
+    city: string;
+    date_of_birth: string;
+    email: string;
+    emergency_contact: string;
+    first_name: string;
+    gender: string;
+    id: number;
+    last_name: string;
+    phone: string;
+    zipcode: string;
 };
 
 export type GetAllCampyearsResponse = (Array<response_CampyearResponse>);

@@ -5,6 +5,8 @@ import type { App } from "vue";
 import CampyearIndex from "@/views/campyear/CampyearIndex.vue";
 import CampyearCreate from "@/views/campyear/CampyearCreate.vue";
 import CampyearEdit from "@/views/campyear/CampyearEdit.vue";
+import ParticipantIndex from "@/views/participant/ParticipantIndex.vue";
+import ParticipantView from "@/views/participant/ParticipantView.vue";
 
 export function createVueRouter(app: App): Router {
   return createRouter({
@@ -32,6 +34,19 @@ export function createVueRouter(app: App): Router {
         path: "/kampjaar/:year/wijzigen",
         name: "campyearEdit",
         component: CampyearEdit,
+        beforeEnter: createAuthGuard(app),
+        props: true,
+      },
+      {
+        path: "/inschrijving",
+        name: "participantIndex",
+        component: ParticipantIndex,
+        beforeEnter: createAuthGuard(app),
+      },
+      {
+        path: "/inschrijving/:id",
+        name: "participantView",
+        component: ParticipantView,
         beforeEnter: createAuthGuard(app),
         props: true,
       },
