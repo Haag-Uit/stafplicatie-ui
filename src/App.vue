@@ -80,8 +80,14 @@ watch(
       >
         <div class="flex flex-col content-between h-full">
           <div class="grow">
-            <div class="text-xl font-bold pb-5 border-b-1 border-base-200">
-              Stafplicatie
+            <div
+              class="text-xl font-bold border-b-1 border-base-200 flex justify-center"
+            >
+              <img
+                src="/logo_stafplicatie.png"
+                alt="Stafplicatie"
+                class="h-12"
+              />
             </div>
             <ul class="menu w-full">
               <li class="menu-title">Algemeen</li>
