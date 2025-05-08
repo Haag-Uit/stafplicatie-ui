@@ -153,7 +153,14 @@
           </div>
           <div class="divider"></div>
           <div class="flex flex-col md:flex-row gap-4">
-            <div class="w-full">Comments</div>
+            <div class="w-full p-4">
+              <div class="flex">
+                <MessageSquareDot class="mr-2" /> Opmerkingen:
+              </div>
+              <div class="mt-2 border-1 border-base-300 rounded p-4">
+                {{ participant?.comment }}
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -190,6 +197,7 @@ import {
   Wallet,
   ReceiptText,
   ShieldX,
+  MessageSquareDot,
 } from "lucide-vue-next";
 
 const toastStore = useToastStore();

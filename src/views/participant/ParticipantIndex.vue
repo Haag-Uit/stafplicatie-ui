@@ -5,7 +5,7 @@
       <div class="card bg-base-100 w-full shadow-sm">
         <div class="card-body">
           <div class="flex items-center justify-between">
-            <h2 class="card-title">Inscrhijvingen</h2>
+            <h2 class="card-title">Inschrijvingen</h2>
           </div>
           <div
             class="overflow-x-auto rounded-box border border-base-content/5 bg-base-100"

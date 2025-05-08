@@ -2,7 +2,7 @@
 import { ref, onMounted, watch, computed } from "vue";
 import { useAuth0 } from "@auth0/auth0-vue";
 import { client } from "./client";
-import { CalendarDays, LayoutDashboard } from "lucide-vue-next";
+import { CalendarDays, LayoutDashboard, Users } from "lucide-vue-next";
 import SidebarFooter from "./components/layout/SidebarFooter.vue";
 import ToastrContainer from "./components/ToastrContainer.vue";
 const auth0 = useAuth0();
@@ -89,6 +89,9 @@ watch(
                 <RouterLink to="/"><LayoutDashboard /> Dashboard</RouterLink>
                 <RouterLink to="/kampjaar">
                   <CalendarDays /> Kampjaren
+                </RouterLink>
+                <RouterLink to="/inschrijving">
+                  <Users /> Inschrijvingen
                 </RouterLink>
               </li>
             </ul>
