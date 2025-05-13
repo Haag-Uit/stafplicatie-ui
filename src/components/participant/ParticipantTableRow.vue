@@ -15,9 +15,11 @@ const props = defineProps(["participant"]);
     <td>{{ props.participant.latest_payment.payment_status }}</td>
     <td>{{ props.participant.attendance }}</td>
     <td class="flex gap-2">
-      <RouterLink :to="`/inschrijving/${props.participant.id}`"
-        ><Eye
-      /></RouterLink>
+      <button class="btn btn-secondary px-2">
+        <RouterLink :to="`/inschrijving/${props.participant.id}`"
+          ><Eye
+        /></RouterLink>
+      </button>
     </td>
   </tr>
 </template>
