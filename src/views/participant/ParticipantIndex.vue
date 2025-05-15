@@ -10,24 +10,31 @@
               Export alles
             </button>
           </div>
+          <label class="input w-full lg:w-1/2">
+            <span class="label"><UserSearch /></span>
+            <input
+              type="text"
+              placeholder="Zoek op naam of email"
+              v-model="searchQuery"
+            />
+          </label>
           <div
             class="overflow-x-auto rounded-box border border-base-content/5 bg-base-100"
           >
             <table class="table">
-              <!-- head -->
               <thead>
                 <tr>
                   <th>Naam</th>
                   <th>Email</th>
-                  <th>Methode</th>
-                  <th>Betaald</th>
-                  <th>Presentie</th>
+                  <th class="hidden md:table-cell">Methode</th>
+                  <th class="hidden md:table-cell">Betaald</th>
+                  <th class="hidden md:table-cell">Presentie</th>
                   <th></th>
                 </tr>
               </thead>
               <tbody>
                 <ParticipantTableRow
-                  v-for="participant in sortedParticipants"
+                  v-for="participant in filteredParticipants"
                   :key="participant.id"
                   :participant="participant"
                 />
@@ -49,17 +56,21 @@ import {
 import { ref, onMounted, computed } from "vue";
 import { useToastStore } from "@/stores/toastr";
 import ParticipantTableRow from "@/components/participant/ParticipantTableRow.vue";
+import { UserSearch } from "lucide-vue-next";
 
 const toastStore = useToastStore();
 
 const participants = ref<GetAllParticipantsResponse>([]);
 const loading = ref(true);
+const searchQuery = ref("");
 
-const sortedParticipants = computed(() => {
-  return participants.value.slice(0).sort((a, b) => {
-    return a.id - b.id;
+const sortParticipants = (participants: GetAllParticipantsResponse) => {
+  return participants.slice(0).sort((a, b) => {
+    const nameA = a.person?.first_name.toLowerCase() || "";
+    const nameB = b.person?.first_name.toLowerCase() || "";
+    return nameA.localeCompare(nameB);
   });
-});
+};
 
 const fetchParticipants = async () => {
   try {
@@ -112,6 +123,20 @@ async function getExport() {
     });
   }
 }
+
+const filteredParticipants = computed(() => {
+  if (!searchQuery.value.trim()) {
+    return sortParticipants(participants.value);
+  }
+  const query = searchQuery.value.toLowerCase();
+  const filtered = participants.value.filter(
+    (participant) =>
+      participant.person?.first_name.toLowerCase().includes(query) ||
+      participant.person?.last_name.toLowerCase().includes(query) ||
+      participant.person?.email.toLowerCase().includes(query)
+  );
+  return sortParticipants(filtered);
+});
 
 onMounted(async () => {
   await fetchParticipants();
