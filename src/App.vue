@@ -2,6 +2,7 @@
 import { ref, onMounted, watch, computed } from "vue";
 import { useAuth0 } from "@auth0/auth0-vue";
 import { client } from "./client";
+import { client as haagAuthClient } from "@/haag-auth-api";
 import { CalendarDays, LayoutDashboard, Users } from "lucide-vue-next";
 import SidebarFooter from "./components/layout/SidebarFooter.vue";
 import ToastrContainer from "./components/ToastrContainer.vue";
@@ -19,6 +20,14 @@ const initiateClient = async () => {
         Authorization: `Bearer ${accessToken}`,
       },
     });
+
+    haagAuthClient.setConfig({
+      baseUrl: import.meta.env.VITE_HAAG_AUTH_API_URL,
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+
     clientReady.value = true;
   } catch (error) {
     auth0Error.value = auth0.error;
@@ -101,6 +110,16 @@ watch(
                 </RouterLink>
               </li>
             </ul>
+            <div class="mt-2">
+              <ul class="menu w-full">
+                <li class="menu-title">Beheer</li>
+                <li>
+                  <RouterLink to="/gebruikers"
+                    ><Users /> Gebruikers
+                  </RouterLink>
+                </li>
+              </ul>
+            </div>
           </div>
           <SidebarFooter />
         </div>

@@ -7,6 +7,8 @@ import CampyearCreate from "@/views/campyear/CampyearCreate.vue";
 import CampyearEdit from "@/views/campyear/CampyearEdit.vue";
 import ParticipantIndex from "@/views/participant/ParticipantIndex.vue";
 import ParticipantView from "@/views/participant/ParticipantView.vue";
+import UserIndex from "@/views/users/UserIndex.vue";
+import UserCreate from "@/views/users/UserCreate.vue";
 
 export function createVueRouter(app: App): Router {
   return createRouter({
@@ -49,6 +51,18 @@ export function createVueRouter(app: App): Router {
         component: ParticipantView,
         beforeEnter: createAuthGuard(app),
         props: true,
+      },
+      {
+        path: "/gebruiker",
+        name: "userIndex",
+        component: UserIndex,
+        beforeEnter: createAuthGuard(app),
+      },
+      {
+        path: "/gebruiker/aanmaken",
+        name: "userCreate",
+        component: UserCreate,
+        beforeEnter: createAuthGuard(app),
       },
     ],
   });
