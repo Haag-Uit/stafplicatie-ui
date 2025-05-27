@@ -27,6 +27,9 @@ const initiateClient = async () => {
         Authorization: `Bearer ${accessToken}`,
       },
     });
+    console.log("Created clients correctly!");
+    console.log("Stafplicatie:", import.meta.env.VITE_API_URL);
+    console.log("Haag Auth API:", import.meta.env.VITE_HAAG_AUTH_API_URL);
 
     clientReady.value = true;
   } catch (error) {

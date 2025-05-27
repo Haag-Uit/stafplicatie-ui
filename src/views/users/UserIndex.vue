@@ -63,7 +63,6 @@ const fetchUsers = async () => {
 };
 
 function removeUser(id: string) {
-  console.log(id);
   users.value = users.value.filter((user) => user.id !== id);
 }
 
