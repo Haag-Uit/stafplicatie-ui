@@ -6,10 +6,13 @@ import { client as haagAuthClient } from "@/haag-auth-api";
 import { CalendarDays, LayoutDashboard, Users } from "lucide-vue-next";
 import SidebarFooter from "./components/layout/SidebarFooter.vue";
 import ToastrContainer from "./components/ToastrContainer.vue";
-const auth0 = useAuth0();
+import HeartBeat from "./components/heartbeat/HeartBeat.vue";
+import { useEventStreamStore } from "./stores/eventstream";
 
+const auth0 = useAuth0();
 const clientReady = ref(false);
 const auth0Error = ref({});
+const eventStream = useEventStreamStore();
 
 const initiateClient = async () => {
   try {
@@ -27,6 +30,8 @@ const initiateClient = async () => {
         Authorization: `Bearer ${accessToken}`,
       },
     });
+
+    eventStream.connect(import.meta.env.VITE_HUBJE_API_URL, accessToken);
 
     clientReady.value = true;
   } catch (error) {
@@ -60,10 +65,11 @@ const handleResize = () => {
   else sidebarOpen.value = true;
 };
 
-onMounted(() => {
+onMounted(async () => {
+  await initiateClient();
+
   handleResize();
   window.addEventListener("resize", handleResize);
-  initiateClient();
 });
 
 watch(
@@ -77,10 +83,10 @@ watch(
 </script>
 
 <template>
-  <div v-show="isLoading" class="flex h-screen items-center justify-center">
+  <div v-if="isLoading" class="flex h-screen items-center justify-center">
     <div class="loading loading-spinner loading-lg"></div>
   </div>
-  <div v-show="!isLoading" class="flex h-screen bg-base-200">
+  <div v-else class="flex h-screen bg-base-200">
     <!-- Sidebar -->
     <transition name="slide">
       <aside
@@ -185,6 +191,7 @@ watch(
       </main>
     </div>
     <ToastrContainer />
+    <HeartBeat />
   </div>
 </template>
 
