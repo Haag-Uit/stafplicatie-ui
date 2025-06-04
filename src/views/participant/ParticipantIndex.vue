@@ -26,7 +26,7 @@
                 <tr>
                   <th>Naam</th>
                   <th>Email</th>
-                  <th class="hidden md:table-cell">Methode</th>
+                  <th class="hidden lg:table-cell">Methode</th>
                   <th class="hidden md:table-cell">Betaald</th>
                   <th class="hidden md:table-cell">Presentie</th>
                   <th></th>
