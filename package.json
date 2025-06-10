@@ -15,7 +15,8 @@
     "lint:eslint": "eslint . --fix",
     "lint": "run-s lint:*",
     "format": "prettier --write src/",
-    "swagger": "npx @hey-api/openapi-ts -i http://localhost:8080/swagger/doc.json -o src/client -c @hey-api/client-fetch"
+    "stfpl-swagger": "npx @hey-api/openapi-ts -i http://localhost:8080/swagger/doc.json -o src/client -c @hey-api/client-fetch",
+    "ha-swagger": "npx @hey-api/openapi-ts -i http://localhost:8081/swagger/doc.json -o src/haag-auth-api -c @hey-api/client-fetch"
   },
   "dependencies": {
     "@auth0/auth0-vue": "^2.4.0",
