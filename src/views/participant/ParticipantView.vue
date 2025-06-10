@@ -87,16 +87,7 @@
                 <CalendarPlus2 class="mr-2" /> Geregistreerd op:
               </div>
               <div class="flex items-center pb-2">
-                {{
-                  new Date(participant?.created_at!).toLocaleDateString(
-                    "nl-NL",
-                    {
-                      year: "numeric",
-                      month: "long",
-                      day: "2-digit",
-                    }
-                  )
-                }}
+                {{ formatLongDateNl(participant?.created_at!) }}
               </div>
               <div class="flex items-start pb-2">
                 <Shirt class="mr-2" /> Shirtmaat:
@@ -199,6 +190,7 @@ import {
   ShieldX,
   MessageSquareDot,
 } from "lucide-vue-next";
+import { formatLongDateNl } from "@/utils/formatDateNl";
 
 const toastStore = useToastStore();
 const props = defineProps<{ id: string }>();
@@ -237,11 +229,7 @@ const dobCalcs = computed(() => {
   if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < date.getDate())) {
     age -= 1;
   }
-  const dob = date.toLocaleDateString("nl-NL", {
-    year: "numeric",
-    month: "long",
-    day: "2-digit",
-  });
+  const dob = formatLongDateNl(date);
   let onHu;
   if (campyear.value) {
     const start = new Date(campyear.value?.start!);

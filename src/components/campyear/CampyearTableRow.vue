@@ -1,54 +1,17 @@
 <script lang="ts" setup>
-import {
-  activateCampyear,
-  closeCampyear,
-  deleteCampyear,
-  openCampyear,
-} from "@/client";
+import { deleteCampyear } from "@/client";
 import { computed } from "vue";
 import { Trash2, Pencil } from "lucide-vue-next";
 import { useToastStore } from "@/stores/toastr";
+import { formatDateNl } from "@/utils/formatDateNl"; // <-- import the new util
 
 const toastStore = useToastStore();
 
 const props = defineProps(["campyear"]);
 const emit = defineEmits(["campyearChanged"]);
 
-const start = computed(() => {
-  const date = new Date(props.campyear.start);
-  return date.toLocaleDateString("nl", {
-    year: "numeric",
-    month: "2-digit",
-    day: "2-digit",
-  });
-});
-
-const end = computed(() => {
-  const date = new Date(props.campyear.end);
-  return date.toLocaleDateString("nl", {
-    year: "numeric",
-    month: "2-digit",
-    day: "2-digit",
-  });
-});
-
-const activate = async () => {
-  await activateCampyear({ path: { year: props.campyear.year } });
-  emit("campyearChanged", props.campyear.year);
-};
-
-const openClose = async () => {
-  try {
-    if (props.campyear.open) {
-      await closeCampyear({ path: { year: props.campyear.year } });
-    } else {
-      await openCampyear({ path: { year: props.campyear.year } });
-    }
-    emit("campyearChanged", props.campyear.year);
-  } catch (error) {
-    console.error("Error opening/closing camp year:", error);
-  }
-};
+const start = computed(() => formatDateNl(props.campyear.start));
+const end = computed(() => formatDateNl(props.campyear.end));
 
 const deleteRow = async () => {
   const { error } = await deleteCampyear({
@@ -70,33 +33,21 @@ const deleteRow = async () => {
 </script>
 
 <template>
-  <tr class="hover:bg-base-300">
+  <tr class="hover:bg-base-300 group">
     <th>{{ campyear.year }}</th>
-    <td>{{ start }}</td>
-    <td>{{ end }}</td>
-    <td>
-      <input
-        type="checkbox"
-        class="toggle border-red-400 bg-red-400 checked:bg-green-400 checked:text-green-600 checked:border-green-400"
-        :disabled="campyear.active"
-        :checked="campyear.active"
-        @change="activate"
-      />
-    </td>
-    <td>
-      <input
-        type="checkbox"
-        class="toggle border-red-400 bg-red-400 checked:bg-green-400 checked:text-green-600 checked:border-green-400"
-        :disabled="!campyear.active"
-        :checked="campyear.open"
-        @change="openClose"
-      />
-    </td>
-    <td class="flex gap-2">
-      <RouterLink :to="`/kampjaar/${campyear.year}/wijzigen`"
-        ><Pencil
-      /></RouterLink>
-      <Trash2 v-show="!campyear.active" @click="deleteRow" />
+    <td class="hidden md:table-cell">{{ start }}</td>
+    <td class="hidden md:table-cell">{{ end }}</td>
+    <td class="hidden md:table-cell w-28">
+      <span class="group-hover:flex hidden items-center justify-center gap-2">
+        <RouterLink :to="`/kampjaar/${campyear.year}/wijzigen`"
+          ><Pencil
+        /></RouterLink>
+        <Trash2
+          v-show="!campyear.active"
+          class="cursor-pointer"
+          @click="deleteRow"
+        />
+      </span>
     </td>
   </tr>
 </template>

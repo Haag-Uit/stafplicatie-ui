@@ -2,6 +2,7 @@
 import { getAllCampyears, type response_CampyearResponse } from "@/client";
 import { computed, onMounted, ref } from "vue";
 import { CalendarDays } from "lucide-vue-next";
+import { formatDateNl } from "@/utils/formatDateNl";
 
 const activeCampyear = ref<response_CampyearResponse>({});
 const isLoading = ref(true);
@@ -10,7 +11,7 @@ onMounted(async () => {
   try {
     const resp = await getAllCampyears();
     activeCampyear.value = resp.data.find(
-      (yr: response_CampyearResponse) => yr.active === true,
+      (yr: response_CampyearResponse) => yr.active === true
     );
     isLoading.value = false;
   } catch (error) {
@@ -23,14 +24,8 @@ const formattedDates = computed(() => {
     const startDate = new Date(activeCampyear.value.start ?? "");
     const endDate = new Date(activeCampyear.value.end ?? "");
     return {
-      start: startDate.toLocaleDateString("nl", {
-        month: "long",
-        day: "2-digit",
-      }),
-      end: endDate.toLocaleDateString("nl", {
-        month: "long",
-        day: "2-digit",
-      }),
+      start: formatDateNl(startDate),
+      end: formatDateNl(endDate),
     };
   }
   return { start: "", end: "" };
