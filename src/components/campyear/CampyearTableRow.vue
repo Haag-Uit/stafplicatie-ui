@@ -40,9 +40,10 @@ const deleteRow = async () => {
     <td class="hidden md:table-cell w-28">
       <span class="group-hover:flex hidden items-center justify-center gap-2">
         <RouterLink :to="`/kampjaar/${campyear.year}/wijzigen`"
-          ><Pencil
+          ><Pencil :size="18"
         /></RouterLink>
         <Trash2
+          :size="18"
           v-show="!campyear.active"
           class="cursor-pointer"
           @click="deleteRow"

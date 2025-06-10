@@ -4,6 +4,7 @@
     <div v-else>
       <div class="flex flex-col gap-4">
         <ActiveCampyearCard
+          v-if="activeCampyear"
           :activeCampyear="activeCampyear"
           :yearList="
             sortedCampyears.map((c) => {
@@ -58,6 +59,7 @@ import {
   getAllCampyears,
   type GetAllCampyearsResponse,
   activateCampyear,
+  type response_CampyearResponse,
 } from "@/client";
 import CampyearTableRow from "@/components/campyear/CampyearTableRow.vue";
 import { ref, onMounted, computed } from "vue";
@@ -69,8 +71,8 @@ const toastStore = useToastStore();
 const campyears = ref<GetAllCampyearsResponse>([]);
 const loading = ref(true);
 
-const activeCampyear = computed(
-  () => campyears.value.find((campyear) => campyear.active === true) ?? {}
+const activeCampyear = computed((): response_CampyearResponse | undefined =>
+  campyears.value.find((campyear) => campyear.active === true)
 );
 
 const sortedCampyears = computed(() => {
@@ -102,7 +104,7 @@ const fetchCampyears = async () => {
 const openClose = async (open: boolean) => {
   try {
     campyears.value = campyears.value.map((cy) => {
-      if (cy.year === activeCampyear.value.year) {
+      if (activeCampyear.value && cy.year === activeCampyear.value.year) {
         return { ...cy, open: open };
       }
       return cy;

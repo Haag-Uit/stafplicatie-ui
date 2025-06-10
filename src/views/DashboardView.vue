@@ -4,7 +4,7 @@ import { computed, onMounted, ref } from "vue";
 import { CalendarDays } from "lucide-vue-next";
 import { formatDateNl } from "@/utils/formatDateNl";
 
-const activeCampyear = ref<response_CampyearResponse>({});
+const activeCampyear = ref<response_CampyearResponse | null>(null);
 const isLoading = ref(true);
 
 onMounted(async () => {
@@ -34,20 +34,18 @@ const formattedDates = computed(() => {
 
 <template>
   <div>
-    <div v-if="!isLoading" class="flex bg-base-200">
-      <div class="main-content">
-        <!-- Main content here -->
-        <div class="card bg-base-100 w-96 shadow-sm">
-          <div class="card-body">
-            <div class="stat">
-              <div class="stat-figure text-secondary">
-                <CalendarDays />
-              </div>
-              <div class="stat-title">Kampjaar</div>
-              <div class="stat-value">{{ activeCampyear.year }}</div>
-              <div class="stat-desc">
-                {{ formattedDates.start }} - {{ formattedDates.end }}
-              </div>
+    <div v-if="!isLoading" class="main-content flex bg-base-200">
+      <!-- Main content here -->
+      <div v-if="activeCampyear" class="card bg-base-100 w-96 shadow-sm">
+        <div class="card-body">
+          <div class="stat">
+            <div class="stat-figure text-secondary">
+              <CalendarDays />
+            </div>
+            <div class="stat-title">Kampjaar</div>
+            <div class="stat-value">{{ activeCampyear.year }}</div>
+            <div class="stat-desc">
+              {{ formattedDates.start }} - {{ formattedDates.end }}
             </div>
           </div>
         </div>

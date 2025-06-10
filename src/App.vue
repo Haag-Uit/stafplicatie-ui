@@ -60,10 +60,10 @@ const handleResize = () => {
   else sidebarOpen.value = true;
 };
 
-onMounted(() => {
+onMounted(async () => {
   handleResize();
   window.addEventListener("resize", handleResize);
-  initiateClient();
+  await initiateClient();
 });
 
 watch(
@@ -77,10 +77,13 @@ watch(
 </script>
 
 <template>
-  <div v-show="isLoading" class="flex h-screen items-center justify-center">
+  <div
+    v-if="isLoading || !clientReady"
+    class="flex h-screen items-center justify-center"
+  >
     <div class="loading loading-spinner loading-lg"></div>
   </div>
-  <div v-show="!isLoading" class="flex h-screen bg-base-200">
+  <div v-else class="flex h-screen bg-base-200">
     <!-- Sidebar -->
     <transition name="slide">
       <aside

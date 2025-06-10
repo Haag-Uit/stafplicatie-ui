@@ -9,6 +9,7 @@ import ParticipantIndex from "@/views/participant/ParticipantIndex.vue";
 import ParticipantView from "@/views/participant/ParticipantView.vue";
 import UserIndex from "@/views/users/UserIndex.vue";
 import UserCreate from "@/views/users/UserCreate.vue";
+import NotFoundView from "@/views/NotFoundView.vue";
 
 export function createVueRouter(app: App): Router {
   return createRouter({
@@ -62,6 +63,12 @@ export function createVueRouter(app: App): Router {
         path: "/gebruiker/aanmaken",
         name: "userCreate",
         component: UserCreate,
+        beforeEnter: createAuthGuard(app),
+      },
+      {
+        path: "/:pathMatch(.*)*",
+        name: "notFound",
+        component: NotFoundView,
         beforeEnter: createAuthGuard(app),
       },
     ],

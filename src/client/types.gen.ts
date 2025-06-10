@@ -59,13 +59,13 @@ export type response_ApiError = {
 };
 
 export type response_CampyearResponse = {
-    active?: boolean;
-    end?: string;
-    insuranceFee?: number;
-    open?: boolean;
-    participationFee?: number;
-    start?: string;
-    year?: number;
+    active: boolean;
+    end: string;
+    insuranceFee: number;
+    open: boolean;
+    participationFee: number;
+    start: string;
+    year: number;
 };
 
 export type response_ParticipantResponse = {
@@ -225,6 +225,35 @@ export type ExportParticipantsError = (string);
 export type GetAllParticipantsResponse = (Array<response_ParticipantWithLatestPaymentResponse>);
 
 export type GetAllParticipantsError = (response_ApiError);
+
+export type SearchParticipantsData = {
+    query?: {
+        /**
+         * Attendance status of the participant
+         */
+        attendance?: string;
+        /**
+         * Email of the participant
+         */
+        email?: string;
+        /**
+         * Name of the participant
+         */
+        name?: string;
+        /**
+         * Payment method used by the participant
+         */
+        paymentMethod?: string;
+        /**
+         * Payment state of the participant
+         */
+        paymentState?: string;
+    };
+};
+
+export type SearchParticipantsResponse = (Array<response_ParticipantResponse>);
+
+export type SearchParticipantsError = (response_ApiError);
 
 export type GetParticipantData = {
     path: {
