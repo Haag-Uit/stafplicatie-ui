@@ -37,7 +37,7 @@ const deleteRow = async () => {
     <th>{{ campyear.year }}</th>
     <td class="hidden md:table-cell">{{ start }}</td>
     <td class="hidden md:table-cell">{{ end }}</td>
-    <td class="hidden md:table-cell w-28">
+    <td class="w-28">
       <span class="group-hover:flex hidden items-center justify-center gap-2">
         <RouterLink :to="`/kampjaar/${campyear.year}/wijzigen`"
           ><Pencil :size="18"

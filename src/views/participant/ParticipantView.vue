@@ -3,8 +3,8 @@
     <div v-if="!loading" class="card bg-base-100 w-full shadow-sm">
       <div class="card-body">
         <h2 class="card-title pb-4">
-          {{ participant?.person?.first_name }}
-          {{ participant?.person.last_name }}
+          {{ participant?.person.firstName }}
+          {{ participant?.person.lastName }}
         </h2>
         <div>
           <div class="flex flex-col lg:flex-row gap-4">
@@ -49,7 +49,7 @@
                 <ShieldPlus class="mr-2" /> Noodcontact:
               </div>
               <div class="flex items-start pb-2 text-error">
-                {{ participant?.person?.emergency_contact }}
+                {{ participant?.person?.emergencyContact }}
               </div>
               <div class="flex items-center pb-2">
                 <MapPinHouse class="mr-2" /> Adres:
@@ -57,7 +57,7 @@
               <div class="flex flex-col items-start pb-2">
                 <div>{{ participant?.person?.address }}</div>
                 <div>
-                  {{ participant?.person?.zipcode }}
+                  {{ participant?.person?.zipCode }}
                   {{ participant?.person?.city }}
                 </div>
               </div>
@@ -202,10 +202,10 @@ type ShirtSizes = "XS" | "S" | "M" | "L" | "XL";
 const shirtSize = ref<ShirtSizes>("M");
 
 const fullname = computed(() => {
-  const name = participant.value?.person?.first_name;
+  const name = participant.value?.person?.firstName;
   const firstLetter = name?.charAt(0).toUpperCase();
   const restOfName = name?.slice(1);
-  return `${firstLetter}${restOfName} ${participant.value?.person?.last_name}`;
+  return `${firstLetter}${restOfName} ${participant.value?.person?.lastName}`;
 });
 
 const gender = computed(() => {
@@ -222,7 +222,7 @@ const gender = computed(() => {
 });
 
 const dobCalcs = computed(() => {
-  const date = new Date(participant.value?.person.date_of_birth!);
+  const date = new Date(participant.value?.person.dateOfBirth!);
   const today = new Date();
   let age = today.getFullYear() - date.getFullYear();
   const monthDiff = today.getMonth() - date.getMonth();

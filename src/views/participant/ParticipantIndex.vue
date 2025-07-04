@@ -66,8 +66,8 @@ const searchQuery = ref("");
 
 const sortParticipants = (participants: GetAllParticipantsResponse) => {
   return participants.slice(0).sort((a, b) => {
-    const nameA = a.person?.first_name.toLowerCase() || "";
-    const nameB = b.person?.first_name.toLowerCase() || "";
+    const nameA = a.person.firstName.toLowerCase() || "";
+    const nameB = b.person.firstName.toLowerCase() || "";
     return nameA.localeCompare(nameB);
   });
 };
@@ -131,9 +131,9 @@ const filteredParticipants = computed(() => {
   const query = searchQuery.value.toLowerCase();
   const filtered = participants.value.filter(
     (participant) =>
-      participant.person?.first_name.toLowerCase().includes(query) ||
-      participant.person?.last_name.toLowerCase().includes(query) ||
-      participant.person?.email.toLowerCase().includes(query)
+      participant.person.firstName.toLowerCase().includes(query) ||
+      participant.person.lastName.toLowerCase().includes(query) ||
+      participant.person.email.toLowerCase().includes(query)
   );
   return sortParticipants(filtered);
 });

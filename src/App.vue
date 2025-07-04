@@ -115,6 +115,16 @@ watch(
             </ul>
             <div class="mt-2">
               <ul class="menu w-full">
+                <li class="menu-title">Medewerkers</li>
+                <li>
+                  <RouterLink to="/medewerker"
+                    ><Users /> Medewerkers
+                  </RouterLink>
+                </li>
+              </ul>
+            </div>
+            <div class="mt-2">
+              <ul class="menu w-full">
                 <li class="menu-title">Beheer</li>
                 <li>
                   <RouterLink to="/gebruiker"><Users /> Gebruikers </RouterLink>

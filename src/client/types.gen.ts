@@ -8,6 +8,44 @@ export type request_CampyearRequest = {
     year: number;
 };
 
+export type request_NewVolunteerRequest = {
+    driversLicense: 'Geen' | 'B' | 'BE';
+    experience: string;
+    firstAid: 'Geen' | 'EHBO' | 'BHV';
+    firstChoices: Array<(string)>;
+    motivation: string;
+    person?: request_PersonRequest;
+    properties: string;
+    secondChoices: Array<(string)>;
+    study: 'hbo-ict' | 'cmd' | 'ads-ai';
+};
+
+export type request_PersonRequest = {
+    address: string;
+    city: string;
+    dateOfBirth: string;
+    email: string;
+    emergencyContact: string;
+    firstName: string;
+    gender: 'm' | 'v' | 'nb';
+    lastName: string;
+    phone: string;
+    zipCode: string;
+};
+
+export type request_RegisterVolunteerRequest = {
+    driversLicense: 'Geen' | 'B' | 'BE';
+    experience: string;
+    firstAid: 'Geen' | 'EHBO' | 'BHV';
+    firstChoices: Array<(string)>;
+    motivation: string;
+    person?: request_PersonRequest;
+    personId: number;
+    properties: string;
+    secondChoices: Array<(string)>;
+    study: 'hbo-ict' | 'cmd' | 'ads-ai';
+};
+
 export type request_RegistrationRequest = {
     accountCity?: string;
     accountName?: string;
@@ -110,15 +148,29 @@ export type response_PaymentResponse = {
 export type response_PersonResponse = {
     address: string;
     city: string;
-    date_of_birth: string;
+    dateOfBirth: string;
     email: string;
-    emergency_contact: string;
-    first_name: string;
-    gender: string;
+    emergencyContact: string;
+    firstName: string;
+    gender: 'm' | 'v' | 'nb';
     id: number;
-    last_name: string;
+    lastName: string;
     phone: string;
-    zipcode: string;
+    zipCode: string;
+};
+
+export type response_VolunteerResponse = {
+    driversLicense: 'Geen' | 'B' | 'BE';
+    experience: string;
+    firstAid: 'Geen' | 'EHBO' | 'BHV';
+    firstChoices: Array<(string)>;
+    id: number;
+    motivation: string;
+    person: response_PersonResponse;
+    personId: number;
+    properties: string;
+    secondChoices: Array<(string)>;
+    study: 'hbo-ict' | 'cmd' | 'ads-ai';
 };
 
 export type GetAllCampyearsResponse = (Array<response_CampyearResponse>);
@@ -315,6 +367,19 @@ export type UpdatePaymentResponse = (response_PaymentResponse);
 
 export type UpdatePaymentError = (string);
 
+export type GetPersonByEmailData = {
+    query: {
+        /**
+         * Email address of the person
+         */
+        email: string;
+    };
+};
+
+export type GetPersonByEmailResponse = (response_PersonResponse);
+
+export type GetPersonByEmailError = (response_ApiError);
+
 export type CreateRegistrationData = {
     /**
      * Registration object to be created
@@ -325,3 +390,82 @@ export type CreateRegistrationData = {
 export type CreateRegistrationResponse = (string);
 
 export type CreateRegistrationError = (string);
+
+export type GetAllVolunteersResponse = (Array<response_VolunteerResponse>);
+
+export type GetAllVolunteersError = ({
+    [key: string]: (string);
+});
+
+export type CreateVolunteerData = {
+    /**
+     * Volunteer object to be created
+     */
+    body: request_NewVolunteerRequest;
+};
+
+export type CreateVolunteerResponse = (response_VolunteerResponse);
+
+export type CreateVolunteerError = ({
+    [key: string]: (string);
+});
+
+export type RegisterVolunteerData = {
+    /**
+     * Volunteer registration request
+     */
+    body: request_RegisterVolunteerRequest;
+};
+
+export type RegisterVolunteerResponse = (response_VolunteerResponse);
+
+export type RegisterVolunteerError = (response_ApiError);
+
+export type GetVolunteerData = {
+    path: {
+        /**
+         * ID of the volunteer
+         */
+        id: number;
+    };
+};
+
+export type GetVolunteerResponse = (response_VolunteerResponse);
+
+export type GetVolunteerError = ({
+    [key: string]: (string);
+});
+
+export type UpdateVolunteerData = {
+    /**
+     * Updated volunteer object
+     */
+    body: request_NewVolunteerRequest;
+    path: {
+        /**
+         * ID of the volunteer
+         */
+        id: number;
+    };
+};
+
+export type UpdateVolunteerResponse = (response_VolunteerResponse);
+
+export type UpdateVolunteerError = ({
+    [key: string]: (string);
+});
+
+export type DeleteVolunteerData = {
+    path: {
+        /**
+         * ID of the volunteer
+         */
+        id: number;
+    };
+};
+
+export type DeleteVolunteerResponse = (string);
+
+export type DeleteVolunteerError = ({
+    [key: string]: (string);
+});
