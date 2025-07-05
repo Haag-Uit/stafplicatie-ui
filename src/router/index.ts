@@ -11,7 +11,7 @@ import UserIndex from "@/views/users/UserIndex.vue";
 import UserCreate from "@/views/users/UserCreate.vue";
 import NotFoundView from "@/views/NotFoundView.vue";
 import VolunteerIndex from "@/views/volunteer/VolunteerIndex.vue";
-import VolunteerCreate from "@/views/volunteer/VolunteerCreate.vue";
+import VolunteerCreate from "@/views/volunteer/VolunteerUpsert.vue";
 
 export function createVueRouter(app: App): Router {
   return createRouter({

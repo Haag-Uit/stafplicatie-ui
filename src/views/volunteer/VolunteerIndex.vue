@@ -7,7 +7,7 @@
           <div class="flex items-center justify-between">
             <h2 class="card-title">Medewerkers</h2>
             <div class="flex gap-2">
-              <button @click="regModal?.showModal()" class="btn btn-primary">
+              <button @click="regModal?.openModal()" class="btn btn-primary">
                 Inschrijven
               </button>
             </div>
@@ -45,35 +45,7 @@
         </div>
       </div>
     </div>
-    <!-- Open the modal using ID.showModal() method -->
-    <dialog ref="reg-modal" id="my_modal_2" class="modal">
-      <div class="modal-box">
-        <form method="dialog">
-          <button
-            class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
-          >
-            ✕
-          </button>
-        </form>
-        <h3 class="text-lg font-bold">Inschrijven</h3>
-        <p class="py-4">Voer het email adres in van de persoon:</p>
-        <label class="input w-full">
-          <Mail />
-          <input
-            type="text"
-            class="grow"
-            placeholder="test@haaguit.com"
-            v-model="regEmail"
-          />
-        </label>
-        <button class="btn btn-primary mt-4 w-full" @click="register">
-          Inschrijven
-        </button>
-      </div>
-      <form method="dialog" class="modal-backdrop">
-        <button>close</button>
-      </form>
-    </dialog>
+    <NewVolunteerModal ref="regModal" modal-id="reg-modal" />
   </div>
 </template>
 
@@ -83,17 +55,14 @@ import { ref, onMounted, computed, useTemplateRef } from "vue";
 import { useToastStore } from "@/stores/toastr";
 import { UserSearch } from "lucide-vue-next";
 import VolunteersTableRow from "@/components/volunteers/VolunteersTableRow.vue";
-import { Mail } from "lucide-vue-next";
-import { useRouter } from "vue-router";
+import NewVolunteerModal from "@/components/volunteers/NewVolunteerModal.vue";
 
 const toastStore = useToastStore();
-const router = useRouter();
 
 const volunteers = ref<GetAllVolunteersResponse>([]);
 const loading = ref(true);
 const searchQuery = ref("");
-const regModal = useTemplateRef("reg-modal");
-const regEmail = ref("");
+const regModal = useTemplateRef("regModal");
 
 const sortVolunteers = (volunteers: GetAllVolunteersResponse) => {
   return volunteers.slice(0).sort((a, b) => {
@@ -131,24 +100,10 @@ const fetchVolunteers = async () => {
   }
 };
 
-const register = () => {
-  if (!regEmail.value) {
-    toastStore.addToast({
-      message: "Voer een email adres in.",
-      type: "error",
-    });
-    return;
-  }
-
-  router.push({
-    name: "VolunteerCreate",
-    query: { email: regEmail.value },
-  });
-};
-
 function removeVolunteer(id: number) {
   volunteers.value = volunteers.value.filter((v) => v.id !== id);
 }
+
 onMounted(async () => {
   await fetchVolunteers();
 });
