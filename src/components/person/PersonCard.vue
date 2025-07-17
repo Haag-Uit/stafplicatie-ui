@@ -121,9 +121,10 @@ import type {
 } from "@/client";
 import { formatLongDateNl } from "@/utils/formatDateNl";
 import { computed } from "vue";
+import type { PersonPersonResponse } from "@/relations-api";
 
 const props = defineProps<{
-  person: ResponsePersonResponse;
+  person: ResponsePersonResponse | PersonPersonResponse;
   campyear?: ResponseCampyearResponse;
 }>();
 

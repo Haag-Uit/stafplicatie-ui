@@ -24,23 +24,23 @@ export type PersonPersonRequest = {
     gender: 'm' | 'v' | 'nb';
     lastName: string;
     phone: string;
-    zipcode: string;
+    zipCode: string;
 };
 
 export type PersonPersonResponse = {
-    address?: string;
-    city?: string;
-    createdAt?: string;
-    dateOfBirth?: string;
-    email?: string;
-    emergencyContact?: string;
-    firstName?: string;
-    gender?: string;
-    id?: number;
-    lastName?: string;
-    phone?: string;
-    updatedAt?: string;
-    zipcode?: string;
+    address: string;
+    city: string;
+    createdAt: string;
+    dateOfBirth: string;
+    email: string;
+    emergencyContact: string;
+    firstName: string;
+    gender: 'm' | 'v' | 'nb';
+    id: number;
+    lastName: string;
+    phone: string;
+    updatedAt: string;
+    zipCode: string;
 };
 
 export type PersonRestError = {
