@@ -49,17 +49,17 @@ const users = ref<ListUsersResponse>([]);
 const loading = ref(true);
 
 const fetchUsers = async () => {
-  try {
-    const response = await listUsers();
-    users.value = response.data;
-    loading.value = false;
-  } catch (error) {
+  const { data, error } = await listUsers();
+  if (error) {
     console.error("Error fetching users:", error);
     toastStore.addToast({
       message: "Fout bij het ophalen van gebruikers.",
       type: "error",
     });
+    return;
   }
+  users.value = data;
+  loading.value = false;
 };
 
 function removeUser(id: string) {

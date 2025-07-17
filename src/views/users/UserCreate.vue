@@ -72,7 +72,7 @@ import { useRouter } from "vue-router";
 import {
   createUser,
   type CreateUserError,
-  type main_ApiError,
+  type MainApiError,
 } from "@/haag-auth-api";
 
 const toastStore = useToastStore();
@@ -97,7 +97,7 @@ const create = async () => {
   if (error) {
     console.error("Error creating user:", error.message);
     if ((error as CreateUserError).fields) {
-      errorMsg.value.error = (error as main_ApiError).fields!;
+      errorMsg.value.error = (error as MainApiError).fields!;
     } else {
       toastStore.addToast({
         message: `Fout bij het aanmaken van gebruiker. ${error.message}.`,
@@ -107,7 +107,7 @@ const create = async () => {
     return;
   }
   toastStore.addToast({
-    message: `Gebruiker ${data.year} aangemaakt`,
+    message: `Gebruiker ${data.nickname} aangemaakt`,
     type: "success",
   });
   router.push({ name: "userIndex" });

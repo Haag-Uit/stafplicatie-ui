@@ -112,7 +112,7 @@
 import {
   createCampyear,
   type CreateCampyearError,
-  type response_ApiError,
+  type ResponseApiError,
 } from "@/client";
 import { ref } from "vue";
 import { useToastStore } from "@/stores/toastr";
@@ -146,7 +146,7 @@ const create = async () => {
   if (error) {
     console.error("Error creating camp year:", error.message);
     if ((error as CreateCampyearError).fields) {
-      errorMsg.value.error = (error as response_ApiError).fields!;
+      errorMsg.value.error = (error as ResponseApiError).fields!;
     } else {
       toastStore.addToast({
         message: `Fout bij het aanmaken van kampjaar. ${error.message}.`,

@@ -1,69 +1,9 @@
 <template>
-  <div class="p-4">
-    <div v-if="!loading" class="card bg-base-100 w-full shadow-sm">
+  <div v-if="!loading && participant" class="p-4">
+    <PersonCard :person="participant.person" :campyear="campyear" />
+    <div class="card bg-base-100 w-full shadow-sm">
       <div class="card-body">
-        <h2 class="card-title pb-4">
-          {{ participant?.person.firstName }}
-          {{ participant?.person.lastName }}
-        </h2>
         <div>
-          <div class="flex flex-col lg:flex-row gap-4">
-            <div class="w-full lg:w-1/2 p-4 grid grid-cols-2">
-              <div class="flex items-center pb-2">
-                <User class="mr-2" /> Naam:
-              </div>
-              <div class="flex items-center pb-2">
-                {{ fullname }}
-              </div>
-              <div class="flex items-center pb-2">
-                <CircleSmall class="mr-2" /> Gender:
-              </div>
-              <div class="flex items-center pb-2">
-                {{ gender }}
-              </div>
-              <div class="flex items-center pb-2">
-                <Cake class="mr-2" /> Geboortedatum:
-              </div>
-              <div class="flex items-center pb-2">
-                <div class="flex flex-col">
-                  <div>
-                    {{ dobCalcs.dob }}
-                    <span class="text-xs text-gray-600">
-                      ({{ dobCalcs.age }} jaar)</span
-                    >
-                  </div>
-                  <div class="text-xs text-gray-600">
-                    (Op Haag Uit: {{ dobCalcs.onHu }})
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="w-full lg:w-1/2 p-4 grid grid-cols-2">
-              <div class="flex items-center pb-2">
-                <Phone class="mr-2" /> Telefoonnummer:
-              </div>
-              <div class="flex items-center pb-2">
-                {{ participant?.person?.phone }}
-              </div>
-              <div class="flex items-center pb-2 text-error">
-                <ShieldPlus class="mr-2" /> Noodcontact:
-              </div>
-              <div class="flex items-start pb-2 text-error">
-                {{ participant?.person?.emergencyContact }}
-              </div>
-              <div class="flex items-center pb-2">
-                <MapPinHouse class="mr-2" /> Adres:
-              </div>
-              <div class="flex flex-col items-start pb-2">
-                <div>{{ participant?.person?.address }}</div>
-                <div>
-                  {{ participant?.person?.zipCode }}
-                  {{ participant?.person?.city }}
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="divider"></div>
           <div class="flex flex-col lg:flex-row gap-4">
             <div class="w-full lg:w-1/2 p-4 grid grid-cols-2">
               <div class="flex items-center pb-2">
@@ -72,12 +12,12 @@
               <div class="flex items-center pb-2">
                 <input
                   type="checkbox"
-                  :checked="participant?.attendance == 'open'"
+                  :checked="participant.attendance == 'open'"
                   class="toggle"
                   :class="{
-                    'toggle-success': participant?.attendance == 'open',
+                    'toggle-success': participant.attendance == 'open',
                     'border-error text-error':
-                      participant?.attendance == 'afgemeld',
+                      participant.attendance == 'afgemeld',
                   }"
                   @change="updateAttendance()"
                 />
@@ -87,7 +27,7 @@
                 <CalendarPlus2 class="mr-2" /> Geregistreerd op:
               </div>
               <div class="flex items-center pb-2">
-                {{ formatLongDateNl(participant?.created_at!) }}
+                {{ formatLongDateNl(participant.createdAt) }}
               </div>
               <div class="flex items-start pb-2">
                 <Shirt class="mr-2" /> Shirtmaat:
@@ -114,19 +54,19 @@
                 <Landmark class="mr-2" /> Transactie ID:
               </div>
               <div class="flex items-center pb-2">
-                {{ latestPayment.payment_id }}
+                {{ latestPayment.paymentId }}
               </div>
               <div class="flex items-center pb-2">
                 <ReceiptText class="mr-2" /> Status:
               </div>
               <div class="flex items-center pb-2">
-                {{ latestPayment.payment_status }}
+                {{ latestPayment.paymentStatus }}
               </div>
               <div class="flex items-center pb-2">
                 <Wallet class="mr-2" /> Betaalmethode:
               </div>
               <div class="flex items-center pb-2">
-                {{ latestPayment.payment_method }}
+                {{ latestPayment.paymentMethod }}
               </div>
               <div class="flex items-center pb-2">
                 <ShieldX class="mr-2" /> Annuleringsverzekering:
@@ -156,9 +96,9 @@
         </div>
       </div>
     </div>
-    <div v-else class="flex h-screen items-center justify-center">
-      <div class="loading loading-spinner loading-lg"></div>
-    </div>
+  </div>
+  <div v-else class="flex h-screen items-center justify-center">
+    <div class="loading loading-spinner loading-lg"></div>
   </div>
 </template>
 
@@ -169,20 +109,14 @@ import {
   updateParticipant,
   type GetCampyearResponse,
   type GetParticipantResponse,
-  type request_UpdateParticipantRequest,
-  type response_PaymentResponse,
+  type RequestUpdateParticipantRequest,
+  type ResponsePaymentResponse,
 } from "@/client";
 import { computed, onMounted, ref, type ComputedRef } from "vue";
 import { useToastStore } from "@/stores/toastr";
 import {
-  User,
   UserCheck,
-  CircleSmall,
-  Cake,
-  Phone,
-  ShieldPlus,
   Shirt,
-  MapPinHouse,
   CalendarPlus2,
   Landmark,
   Wallet,
@@ -191,6 +125,7 @@ import {
   MessageSquareDot,
 } from "lucide-vue-next";
 import { formatLongDateNl } from "@/utils/formatDateNl";
+import PersonCard from "@/components/person/PersonCard.vue";
 
 const toastStore = useToastStore();
 const props = defineProps<{ id: string }>();
@@ -200,53 +135,6 @@ const participant = ref<GetParticipantResponse>();
 const campyear = ref<GetCampyearResponse>();
 type ShirtSizes = "XS" | "S" | "M" | "L" | "XL";
 const shirtSize = ref<ShirtSizes>("M");
-
-const fullname = computed(() => {
-  const name = participant.value?.person?.firstName;
-  const firstLetter = name?.charAt(0).toUpperCase();
-  const restOfName = name?.slice(1);
-  return `${firstLetter}${restOfName} ${participant.value?.person?.lastName}`;
-});
-
-const gender = computed(() => {
-  switch (participant.value?.person.gender) {
-    case "m":
-      return "Man";
-    case "v":
-      return "Vrouw";
-    case "nb":
-      return "Non-binair";
-    default:
-      return "Onbekend";
-  }
-});
-
-const dobCalcs = computed(() => {
-  const date = new Date(participant.value?.person.dateOfBirth!);
-  const today = new Date();
-  let age = today.getFullYear() - date.getFullYear();
-  const monthDiff = today.getMonth() - date.getMonth();
-  if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < date.getDate())) {
-    age -= 1;
-  }
-  const dob = formatLongDateNl(date);
-  let onHu;
-  if (campyear.value) {
-    const start = new Date(campyear.value?.start!);
-    // calculcate the age as of the start date of the camp year
-    onHu = start.getFullYear() - date.getFullYear();
-    const monthDiff = start.getMonth() - date.getMonth();
-    if (
-      monthDiff < 0 ||
-      (monthDiff === 0 && start.getDate() < date.getDate())
-    ) {
-      onHu -= 1;
-    }
-  } else {
-    onHu = "Onbekend";
-  }
-  return { age, dob, onHu };
-});
 
 const attendance = computed(() => {
   switch (participant.value?.attendance) {
@@ -259,10 +147,10 @@ const attendance = computed(() => {
   }
 });
 
-const latestPayment: ComputedRef<response_PaymentResponse> = computed(() => {
+const latestPayment: ComputedRef<ResponsePaymentResponse> = computed(() => {
   const payments = participant.value?.payments!;
   const latest = payments.reduce((prev, current) => {
-    return new Date(prev.created_at!) > new Date(current.created_at!)
+    return new Date(prev.createdAt!) > new Date(current.createdAt!)
       ? prev
       : current;
   });
@@ -270,20 +158,20 @@ const latestPayment: ComputedRef<response_PaymentResponse> = computed(() => {
 });
 
 async function updateAttendance() {
-  const body: request_UpdateParticipantRequest = {
+  const body: RequestUpdateParticipantRequest = {
     attendance: participant.value?.attendance === "open" ? "afgemeld" : "open",
   };
   saveParticipant(body);
 }
 
 async function updateShirtsize() {
-  const body: request_UpdateParticipantRequest = {
-    shirt_size: shirtSize.value,
+  const body: RequestUpdateParticipantRequest = {
+    shirtSize: shirtSize.value,
   };
   saveParticipant(body);
 }
 
-async function saveParticipant(body: request_UpdateParticipantRequest) {
+async function saveParticipant(body: RequestUpdateParticipantRequest) {
   const { data, error } = await updateParticipant({
     path: { id: Number(props.id) },
     body,
@@ -312,13 +200,13 @@ async function fetchParticipant() {
     return;
   }
   participant.value = data;
-  shirtSize.value = data.shirt_size;
+  shirtSize.value = data.shirtSize;
   loading.value = false;
 }
 
 async function fetchCampyear() {
   const { data: campyearData, error: campyearError } = await getCampyear({
-    path: { year: Number(participant.value?.campyear_year) },
+    path: { year: Number(participant.value?.campyearYear) },
   });
   if (campyearError) {
     console.error("Error fetching camp year:", campyearError.message);

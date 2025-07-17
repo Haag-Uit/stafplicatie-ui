@@ -382,14 +382,11 @@
 <script setup lang="ts">
 import {
   createVolunteer,
-  getPersonByEmail,
   getVolunteer,
-  registerVolunteer,
   updateVolunteer,
   type CreateVolunteerError,
   type GetVolunteerResponse,
-  type RegisterVolunteerError,
-  type response_ApiError,
+  type UpdateVolunteerError,
 } from "@/client";
 import { onMounted, ref } from "vue";
 import { useToastStore } from "@/stores/toastr";
@@ -406,10 +403,10 @@ import {
   GraduationCap,
   BriefcaseMedical,
 } from "lucide-vue-next";
-import { useRoute, useRouter } from "vue-router";
+import { useRouter } from "vue-router";
 
-const route = useRoute();
-const email = ref<string>((route.query.email as string) ?? "");
+// const route = useRoute();
+// const email = ref<string>((route.query.email as string) ?? "");
 
 const router = useRouter();
 
@@ -437,6 +434,8 @@ const volunteer = ref<GetVolunteerResponse>({
     city: "",
     gender: "nb",
     dateOfBirth: "",
+    createdAt: "",
+    updatedAt: "",
   },
   motivation: "",
   properties: "",
@@ -446,6 +445,16 @@ const volunteer = ref<GetVolunteerResponse>({
   study: "hbo-ict",
   firstChoices: [],
   secondChoices: [],
+  campyearYear: 0,
+  campyear: {
+    year: 0,
+    start: "",
+    end: "",
+    participationFee: 0,
+    insuranceFee: 0,
+    active: false,
+    open: false,
+  },
 });
 
 const errorMsg = ref<{ error: { [key: string]: string } }>({
@@ -459,8 +468,8 @@ async function saveVolunteer() {
       body: volunteer.value,
     });
     if (error) {
-      if ((error as RegisterVolunteerError).fields) {
-        errorMsg.value.error = (error as response_ApiError).fields!;
+      if ((error as UpdateVolunteerError).fields) {
+        errorMsg.value.error = error;
       } else {
         toastStore.addToast({
           message: `Fout bij het bijwerken van de medewerker. ${error.message}.`,
@@ -477,36 +486,19 @@ async function saveVolunteer() {
     router.push({ name: "volunteerIndex" });
     return;
   }
-  if (volunteer.value.person.id != 0) {
-    const { error } = await registerVolunteer({
-      body: volunteer.value,
-    });
-    if (error) {
-      if ((error as RegisterVolunteerError).fields) {
-        errorMsg.value.error = (error as response_ApiError).fields!;
-      } else {
-        toastStore.addToast({
-          message: `Fout bij het aanmaken van de medewerker. ${error.message}.`,
-          type: "error",
-        });
-      }
-      return;
+  const { error } = await createVolunteer({
+    body: volunteer.value,
+  });
+  if (error) {
+    if ((error as CreateVolunteerError).fields) {
+      errorMsg.value.error = error;
+    } else {
+      toastStore.addToast({
+        message: `Fout bij het aanmaken van de medewerker. ${error.message}.`,
+        type: "error",
+      });
     }
-  } else {
-    const { error } = await createVolunteer({
-      body: volunteer.value,
-    });
-    if (error) {
-      if ((error as CreateVolunteerError).fields) {
-        errorMsg.value.error = (error as response_ApiError).fields!;
-      } else {
-        toastStore.addToast({
-          message: `Fout bij het aanmaken van de medewerker. ${error.message}.`,
-          type: "error",
-        });
-      }
-      return;
-    }
+    return;
   }
   toastStore.addToast({
     message: `Medewerker ${volunteer.value.person.firstName} ${volunteer.value.person.lastName} aangemaakt`,
@@ -516,33 +508,33 @@ async function saveVolunteer() {
 }
 
 async function fetchPerson() {
-  if (!email.value) {
-    loading.value = false;
-    return;
-  }
-  const resp = await getPersonByEmail({
-    query: { email: email.value as string },
-  });
-  if (resp.error) {
-    if (resp.response.status === 404) {
-      toastStore.addToast({
-        type: "warning",
-        message: "Persoon niet gevonden met dit e-mailadres",
-      });
-      volunteer.value.person.email = email.value as string;
-      loading.value = false;
-      return;
-    }
-    toastStore.addToast({
-      type: "error",
-      message: "Fout bij het ophalen van de persoonsgegevens",
-    });
-    console.error("Error fetching person:", resp.error.message);
-    return;
-  }
-  volunteer.value.person = resp.data;
-  volunteer.value.personId = resp.data.id;
-  loading.value = false;
+  // if (!email.value) {
+  //   loading.value = false;
+  //   return;
+  // }
+  // const resp = await getPersonByEmail({
+  //   query: { email: email.value as string },
+  // });
+  // if (resp.error) {
+  //   if (resp.response.status === 404) {
+  //     toastStore.addToast({
+  //       type: "warning",
+  //       message: "Persoon niet gevonden met dit e-mailadres",
+  //     });
+  //     volunteer.value.person.email = email.value as string;
+  //     loading.value = false;
+  //     return;
+  //   }
+  //   toastStore.addToast({
+  //     type: "error",
+  //     message: "Fout bij het ophalen van de persoonsgegevens",
+  //   });
+  //   console.error("Error fetching person:", resp.error.message);
+  //   return;
+  // }
+  // volunteer.value.person = resp.data;
+  // volunteer.value.personId = resp.data.id;
+  // loading.value = false;
 }
 
 onMounted(async () => {

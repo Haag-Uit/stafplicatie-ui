@@ -1,15 +1,15 @@
 <script setup lang="ts">
 import { ref, onMounted, watch, computed } from "vue";
 import { useAuth0 } from "@auth0/auth0-vue";
-import { client } from "./client";
-import { client as haagAuthClient } from "@/haag-auth-api";
+import { client } from "./client/client.gen";
+import { client as haagAuthClient } from "@/haag-auth-api/client.gen";
+import { client as relationsClient } from "@/relations-api/client.gen";
 import { CalendarDays, LayoutDashboard, Users } from "lucide-vue-next";
 import SidebarFooter from "./components/layout/SidebarFooter.vue";
 import ToastrContainer from "./components/ToastrContainer.vue";
 const auth0 = useAuth0();
 
 const clientReady = ref(false);
-const auth0Error = ref({});
 
 const initiateClient = async () => {
   try {
@@ -28,9 +28,15 @@ const initiateClient = async () => {
       },
     });
 
+    relationsClient.setConfig({
+      baseUrl: import.meta.env.VITE_RELATIONS_API_URL,
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+
     clientReady.value = true;
   } catch (error) {
-    auth0Error.value = auth0.error;
     console.error("Error setting access token:", error);
   }
 };

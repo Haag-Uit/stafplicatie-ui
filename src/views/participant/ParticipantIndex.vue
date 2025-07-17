@@ -73,17 +73,17 @@ const sortParticipants = (participants: GetAllParticipantsResponse) => {
 };
 
 const fetchParticipants = async () => {
-  try {
-    const response = await getAllParticipants();
-    participants.value = response.data;
-    loading.value = false;
-  } catch (error) {
+  const { data, error } = await getAllParticipants();
+  if (error) {
     console.error("Error fetching participants:", error);
     toastStore.addToast({
       message: "Fout bij het ophalen van inschrijvingen.",
       type: "error",
     });
+    return;
   }
+  participants.value = data ?? [];
+  loading.value = false;
 };
 
 async function getExport() {
@@ -95,12 +95,16 @@ async function getExport() {
     });
 
     // Extract the filename from the Content-Disposition header
-    const contentDisposition = response.response.headers["content-disposition"];
+    const contentDisposition = response.response.headers.get(
+      "content-disposition"
+    );
     const fileName =
       contentDisposition?.split("filename=")[1]?.replace(/"/g, "") ||
       "inschrijvingen_haaguit.csv";
     // Create a URL for the file
-    const url = window.URL.createObjectURL(new Blob([response.data]));
+    const url = window.URL.createObjectURL(
+      new Blob([response.data as BlobPart])
+    );
 
     // Create a temporary anchor element to trigger the download
     const link = document.createElement("a");

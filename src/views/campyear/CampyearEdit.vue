@@ -100,7 +100,6 @@
 import {
   getCampyear,
   updateCampyear,
-  type UpdateCampyearData,
   type UpdateCampyearError,
 } from "@/client";
 import { onMounted, ref } from "vue";
@@ -139,12 +138,12 @@ onMounted(async () => {
   }
   start.value = new Date(data.start).toLocaleDateString();
   end.value = new Date(data.end).toLocaleDateString();
-  participationFee.value = data.participationFee;
-  insuranceFee.value = data.insuranceFee;
+  participationFee.value = String(data.participationFee);
+  insuranceFee.value = String(data.insuranceFee);
 });
 
 const save = async () => {
-  const req: UpdateCampyearData = {
+  const { data, error } = await updateCampyear({
     path: { year: Number(props.year) },
     body: {
       start: start.value,
@@ -156,8 +155,7 @@ const save = async () => {
       insuranceFee:
         insuranceFee.value === "" ? undefined : Number(insuranceFee.value),
     },
-  };
-  const { data, error } = await updateCampyear(req);
+  });
   if (error) {
     console.error("Error updating camp year:", error.message);
     if ((error as UpdateCampyearError).fields) {

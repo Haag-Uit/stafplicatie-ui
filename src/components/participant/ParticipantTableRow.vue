@@ -20,15 +20,18 @@ function goToView() {
     class="hover:bg-base-300 group cursor-pointer"
   >
     <th>
-      {{ props.participant.person.first_name }}
-      {{ props.participant.person.last_name }}
+      {{ props.participant.person.firstName }}
+      {{ props.participant.person.lastName }}
     </th>
     <td>{{ props.participant.person.email }}</td>
     <td class="hidden lg:table-cell">
-      {{ props.participant.latest_payment.payment_method }}
+      {{
+        props.participant.latestPayment?.paymentMethod ??
+        "Geen betaling gevonden"
+      }}
     </td>
     <td class="hidden md:table-cell">
-      {{ props.participant.latest_payment.payment_status }}
+      {{ props.participant.latestPayment?.paymentStatus ?? "Onbekend" }}
     </td>
     <td class="hidden md:table-cell">{{ props.participant.attendance }}</td>
     <td class="w-14">

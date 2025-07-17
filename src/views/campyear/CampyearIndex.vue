@@ -59,7 +59,7 @@ import {
   getAllCampyears,
   type GetAllCampyearsResponse,
   activateCampyear,
-  type response_CampyearResponse,
+  type ResponseCampyearResponse,
 } from "@/client";
 import CampyearTableRow from "@/components/campyear/CampyearTableRow.vue";
 import { ref, onMounted, computed } from "vue";
@@ -71,7 +71,7 @@ const toastStore = useToastStore();
 const campyears = ref<GetAllCampyearsResponse>([]);
 const loading = ref(true);
 
-const activeCampyear = computed((): response_CampyearResponse | undefined =>
+const activeCampyear = computed((): ResponseCampyearResponse | undefined =>
   campyears.value.find((campyear) => campyear.active === true)
 );
 
@@ -89,16 +89,16 @@ const activate = async (year: number) => {
 };
 
 const fetchCampyears = async () => {
-  try {
-    const response = await getAllCampyears();
-    campyears.value = response.data;
-  } catch (error) {
+  const { data, error } = await getAllCampyears();
+  if (error) {
     console.error("Error fetching camp years:", error);
     toastStore.addToast({
       message: "Fout bij het ophalen van kampjaren.",
       type: "error",
     });
+    return;
   }
+  campyears.value = data ?? [];
 };
 
 const openClose = async (open: boolean) => {

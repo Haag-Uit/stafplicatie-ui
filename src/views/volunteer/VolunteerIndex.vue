@@ -87,17 +87,17 @@ const filteredVolunteers = computed(() => {
 });
 
 const fetchVolunteers = async () => {
-  try {
-    const response = await getAllVolunteers();
-    volunteers.value = response.data;
-    loading.value = false;
-  } catch (error) {
+  const { data, error } = await getAllVolunteers();
+  if (error) {
     console.error("Error fetching volunteers:", error);
     toastStore.addToast({
       message: "Fout bij het ophalen van medewerkers.",
       type: "error",
     });
+    return;
   }
+  volunteers.value = data;
+  loading.value = false;
 };
 
 function removeVolunteer(id: number) {

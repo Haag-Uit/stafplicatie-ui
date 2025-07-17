@@ -1,22 +1,22 @@
 <script setup lang="ts">
-import { getAllCampyears, type response_CampyearResponse } from "@/client";
+import { getAllCampyears, type ResponseCampyearResponse } from "@/client";
 import { computed, onMounted, ref } from "vue";
 import { CalendarDays } from "lucide-vue-next";
 import { formatDateNl } from "@/utils/formatDateNl";
 
-const activeCampyear = ref<response_CampyearResponse | null>(null);
+const activeCampyear = ref<ResponseCampyearResponse>();
 const isLoading = ref(true);
 
 onMounted(async () => {
-  try {
-    const resp = await getAllCampyears();
-    activeCampyear.value = resp.data.find(
-      (yr: response_CampyearResponse) => yr.active === true
-    );
-    isLoading.value = false;
-  } catch (error) {
-    console.error("Error fetching campyears:", error);
+  const { data, error } = await getAllCampyears();
+  if (error) {
+    console.error("Error fetching camp years:", error);
+    return;
   }
+  activeCampyear.value = data?.find(
+    (yr: ResponseCampyearResponse) => yr.active === true
+  );
+  isLoading.value = false;
 });
 
 const formattedDates = computed(() => {
