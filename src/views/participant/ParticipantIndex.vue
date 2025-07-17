@@ -135,8 +135,11 @@ const filteredParticipants = computed(() => {
   const query = searchQuery.value.toLowerCase();
   const filtered = participants.value.filter(
     (participant) =>
-      participant.person.firstName.toLowerCase().includes(query) ||
-      participant.person.lastName.toLowerCase().includes(query) ||
+      (
+        participant.person.firstName.toLowerCase() +
+        " " +
+        participant.person.lastName.toLowerCase()
+      ).includes(query) ||
       participant.person.email.toLowerCase().includes(query)
   );
   return sortParticipants(filtered);
