@@ -11,7 +11,8 @@ import UserIndex from "@/views/users/UserIndex.vue";
 import UserCreate from "@/views/users/UserCreate.vue";
 import NotFoundView from "@/views/NotFoundView.vue";
 import VolunteerIndex from "@/views/volunteer/VolunteerIndex.vue";
-import VolunteerCreate from "@/views/volunteer/VolunteerUpsert.vue";
+import VolunteerForm from "@/views/volunteer/VolunteerFormView.vue";
+import VolunteerPersonSearch from "@/views/volunteer/VolunteerPersonSearch.vue";
 
 export function createVueRouter(app: App): Router {
   return createRouter({
@@ -75,17 +76,15 @@ export function createVueRouter(app: App): Router {
       },
       {
         path: "/medewerker/aanmaken",
-        name: "VolunteerCreate",
-        component: VolunteerCreate,
+        name: "volunteerCreateSearch",
+        component: VolunteerPersonSearch,
         beforeEnter: createAuthGuard(app),
-        props: { email: "" },
       },
       {
-        path: "/medewerker/:id",
-        name: "VolunteerView",
-        component: VolunteerCreate,
+        path: "/medewerker/aanmaken/persoon/:personId",
+        name: "volunteerCreate",
+        component: VolunteerForm,
         beforeEnter: createAuthGuard(app),
-        props: true,
       },
 
       // Catch-all route for 404 Not Found

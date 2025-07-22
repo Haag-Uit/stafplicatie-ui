@@ -8,13 +8,14 @@ export type RequestCampyearRequest = {
     year: number;
 };
 
-export type RequestNewVolunteerRequest = {
+export type RequestCreateVolunteerRequest = {
     driversLicense: 'Geen' | 'B' | 'BE';
-    experience: string;
+    experience?: string;
     firstAid: 'Geen' | 'EHBO' | 'BHV';
     firstChoices: Array<string>;
-    motivation: string;
-    properties: string;
+    motivation?: string;
+    personId: number;
+    properties?: string;
     secondChoices: Array<string>;
     study: 'hbo-ict' | 'cmd' | 'ads-ai';
 };
@@ -722,9 +723,7 @@ export type GetAllVolunteersErrors = {
     /**
      * Internal server error
      */
-    500: {
-        [key: string]: string;
-    };
+    500: ResponseApiError;
 };
 
 export type GetAllVolunteersError = GetAllVolunteersErrors[keyof GetAllVolunteersErrors];
@@ -742,7 +741,7 @@ export type CreateVolunteerData = {
     /**
      * Volunteer object to be created
      */
-    body: RequestNewVolunteerRequest;
+    body: RequestCreateVolunteerRequest;
     path?: never;
     query?: never;
     url: '/volunteer/api/v1/';
@@ -752,15 +751,11 @@ export type CreateVolunteerErrors = {
     /**
      * Invalid request
      */
-    400: {
-        [key: string]: string;
-    };
+    400: ResponseApiError;
     /**
      * Internal server error
      */
-    500: {
-        [key: string]: string;
-    };
+    500: ResponseApiError;
 };
 
 export type CreateVolunteerError = CreateVolunteerErrors[keyof CreateVolunteerErrors];
@@ -790,9 +785,7 @@ export type DeleteVolunteerErrors = {
     /**
      * Internal server error
      */
-    500: {
-        [key: string]: string;
-    };
+    500: ResponseApiError;
 };
 
 export type DeleteVolunteerError = DeleteVolunteerErrors[keyof DeleteVolunteerErrors];
@@ -822,9 +815,7 @@ export type GetVolunteerErrors = {
     /**
      * Volunteer not found
      */
-    404: {
-        [key: string]: string;
-    };
+    404: ResponseApiError;
 };
 
 export type GetVolunteerError = GetVolunteerErrors[keyof GetVolunteerErrors];
@@ -842,7 +833,7 @@ export type UpdateVolunteerData = {
     /**
      * Updated volunteer object
      */
-    body: RequestNewVolunteerRequest;
+    body: RequestCreateVolunteerRequest;
     path: {
         /**
          * ID of the volunteer
@@ -857,15 +848,11 @@ export type UpdateVolunteerErrors = {
     /**
      * Invalid request
      */
-    400: {
-        [key: string]: string;
-    };
+    400: ResponseApiError;
     /**
      * Internal server error
      */
-    500: {
-        [key: string]: string;
-    };
+    500: ResponseApiError;
 };
 
 export type UpdateVolunteerError = UpdateVolunteerErrors[keyof UpdateVolunteerErrors];

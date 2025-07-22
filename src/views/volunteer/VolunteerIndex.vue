@@ -7,7 +7,7 @@
           <div class="flex items-center justify-between">
             <h2 class="card-title">Medewerkers</h2>
             <div class="flex gap-2">
-              <button @click="regModal?.openModal()" class="btn btn-primary">
+              <button @click="create" class="btn btn-primary">
                 Inschrijven
               </button>
             </div>
@@ -45,24 +45,23 @@
         </div>
       </div>
     </div>
-    <NewVolunteerModal ref="regModal" modal-id="reg-modal" />
   </div>
 </template>
 
 <script setup lang="ts">
 import { getAllVolunteers, type GetAllVolunteersResponse } from "@/client";
-import { ref, onMounted, computed, useTemplateRef } from "vue";
+import { ref, onMounted, computed } from "vue";
 import { useToastStore } from "@/stores/toastr";
 import { UserSearch } from "lucide-vue-next";
+import { useRouter } from "vue-router";
 import VolunteersTableRow from "@/components/volunteers/VolunteersTableRow.vue";
-import NewVolunteerModal from "@/components/volunteers/NewVolunteerModal.vue";
 
 const toastStore = useToastStore();
+const router = useRouter();
 
 const volunteers = ref<GetAllVolunteersResponse>([]);
 const loading = ref(true);
 const searchQuery = ref("");
-const regModal = useTemplateRef("regModal");
 
 const sortVolunteers = (volunteers: GetAllVolunteersResponse) => {
   return volunteers.slice(0).sort((a, b) => {
@@ -103,6 +102,11 @@ const fetchVolunteers = async () => {
 function removeVolunteer(id: number) {
   volunteers.value = volunteers.value.filter((v) => v.id !== id);
 }
+
+const create = () => {
+  // Navigate to the volunteer creation page
+  router.push({ name: "volunteerCreateSearch" });
+};
 
 onMounted(async () => {
   await fetchVolunteers();

@@ -46,24 +46,20 @@
     </div>
     <div v-else class="card-body">
       <h2 class="card-title pb-4">
-        {{ person.firstName }} {{ person.lastName }}
+        {{ props.person.firstName }} {{ props.person.lastName }}
       </h2>
       <div class="flex flex-col lg:flex-row gap-4">
-        <div class="w-full lg:w-1/2 p-4 grid grid-cols-2">
-          <div class="flex items-center pb-2"><User class="mr-2" /> Naam:</div>
-          <div class="flex items-center pb-2">
+        <div class="w-full lg:w-1/2 p-4 grid grid-cols-2 column">
+          <div><User class="mr-2" /> Naam:</div>
+          <div>
             {{ fullname }}
           </div>
-          <div class="flex items-center pb-2">
-            <CircleSmall class="mr-2" /> Gender:
-          </div>
-          <div class="flex items-center pb-2">
+          <div><CircleSmall class="mr-2" /> Gender:</div>
+          <div>
             {{ gender }}
           </div>
-          <div class="flex items-center pb-2">
-            <Cake class="mr-2" /> Geboortedatum:
-          </div>
-          <div class="flex items-center pb-2">
+          <div><Cake class="mr-2" /> Geboortedatum:</div>
+          <div>
             <div class="flex flex-col">
               <div>
                 {{ dobCalcs.dob }}
@@ -77,23 +73,21 @@
             </div>
           </div>
         </div>
-        <div class="w-full lg:w-1/2 p-4 grid grid-cols-2">
-          <div class="flex items-center pb-2">
-            <Phone class="mr-2" /> Telefoonnummer:
+        <div class="w-full lg:w-1/2 p-4 grid grid-cols-2 column">
+          <div><Mail class="mr-2" /> Email:</div>
+          <div>
+            {{ props.person.email }}
           </div>
-          <div class="flex items-center pb-2">
+          <div><Phone class="mr-2" /> Telefoonnummer:</div>
+          <div>
             {{ props.person.phone }}
           </div>
-          <div class="flex items-center pb-2 text-error">
-            <ShieldPlus class="mr-2" /> Noodcontact:
-          </div>
-          <div class="flex items-start pb-2 text-error">
+          <div class="text-error"><ShieldPlus class="mr-2" /> Noodcontact:</div>
+          <div class="text-error">
             {{ props.person.emergencyContact }}
           </div>
-          <div class="flex items-center pb-2">
-            <MapPinHouse class="mr-2" /> Adres:
-          </div>
-          <div class="flex flex-col items-start pb-2">
+          <div><MapPinHouse class="mr-2" /> Adres:</div>
+          <div class="address-container">
             <div>{{ props.person.address }}</div>
             <div>
               {{ props.person.zipCode }}
@@ -114,13 +108,14 @@ import {
   Phone,
   ShieldPlus,
   MapPinHouse,
+  Mail,
 } from "lucide-vue-next";
 import type {
   ResponseCampyearResponse,
   ResponsePersonResponse,
 } from "@/client";
 import { formatLongDateNl } from "@/utils/formatDateNl";
-import { computed } from "vue";
+import { computed, onMounted, ref } from "vue";
 import type { PersonPersonResponse } from "@/relations-api";
 
 const props = defineProps<{
@@ -128,7 +123,7 @@ const props = defineProps<{
   campyear?: ResponseCampyearResponse;
 }>();
 
-const loading = computed(() => !props.person);
+const loading = ref<boolean>(true);
 
 const fullname = computed(() => {
   const name = props.person.firstName;
@@ -174,6 +169,21 @@ const gender = computed(() => {
       return "Onbekend";
   }
 });
+
+onMounted(() => {
+  // Any additional setup can be done here
+  loading.value = false;
+});
 </script>
 
-<style scoped></style>
+<style scoped>
+@reference "../../assets/main.css";
+
+.column > div {
+  @apply flex items-center pb-2 h-10;
+}
+
+.address-container {
+  @apply flex flex-col items-start!;
+}
+</style>

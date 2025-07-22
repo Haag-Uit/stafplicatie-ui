@@ -6,11 +6,13 @@ import { createAuth0 } from "@auth0/auth0-vue";
 
 import App from "./App.vue";
 import { createVueRouter } from "./router";
+import { i18n } from "./i18n/i18n";
 
 const app = createApp(App);
 
 app.use(createPinia());
 app.use(createVueRouter(app));
+app.use(i18n);
 
 app.use(
   createAuth0({

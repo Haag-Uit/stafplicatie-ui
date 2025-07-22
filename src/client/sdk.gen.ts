@@ -24,6 +24,12 @@ export type Options<TData extends TDataShape = TDataShape, ThrowOnError extends 
  */
 export const getAllCampyears = <ThrowOnError extends boolean = false>(options?: Options<GetAllCampyearsData, ThrowOnError>) => {
     return (options?.client ?? _heyApiClient).get<GetAllCampyearsResponses, GetAllCampyearsErrors, ThrowOnError>({
+        security: [
+            {
+                scheme: 'bearer',
+                type: 'http'
+            }
+        ],
         url: '/campyear/api/v1/',
         ...options
     });
@@ -35,6 +41,12 @@ export const getAllCampyears = <ThrowOnError extends boolean = false>(options?: 
  */
 export const createCampyear = <ThrowOnError extends boolean = false>(options: Options<CreateCampyearData, ThrowOnError>) => {
     return (options.client ?? _heyApiClient).post<CreateCampyearResponses, CreateCampyearErrors, ThrowOnError>({
+        security: [
+            {
+                scheme: 'bearer',
+                type: 'http'
+            }
+        ],
         url: '/campyear/api/v1/',
         ...options,
         headers: {
@@ -50,6 +62,12 @@ export const createCampyear = <ThrowOnError extends boolean = false>(options: Op
  */
 export const deleteCampyear = <ThrowOnError extends boolean = false>(options: Options<DeleteCampyearData, ThrowOnError>) => {
     return (options.client ?? _heyApiClient).delete<DeleteCampyearResponses, DeleteCampyearErrors, ThrowOnError>({
+        security: [
+            {
+                scheme: 'bearer',
+                type: 'http'
+            }
+        ],
         url: '/campyear/api/v1/{year}',
         ...options
     });
@@ -61,6 +79,12 @@ export const deleteCampyear = <ThrowOnError extends boolean = false>(options: Op
  */
 export const getCampyear = <ThrowOnError extends boolean = false>(options: Options<GetCampyearData, ThrowOnError>) => {
     return (options.client ?? _heyApiClient).get<GetCampyearResponses, GetCampyearErrors, ThrowOnError>({
+        security: [
+            {
+                scheme: 'bearer',
+                type: 'http'
+            }
+        ],
         url: '/campyear/api/v1/{year}',
         ...options
     });
@@ -72,6 +96,12 @@ export const getCampyear = <ThrowOnError extends boolean = false>(options: Optio
  */
 export const updateCampyear = <ThrowOnError extends boolean = false>(options: Options<UpdateCampyearData, ThrowOnError>) => {
     return (options.client ?? _heyApiClient).put<UpdateCampyearResponses, UpdateCampyearErrors, ThrowOnError>({
+        security: [
+            {
+                scheme: 'bearer',
+                type: 'http'
+            }
+        ],
         url: '/campyear/api/v1/{year}',
         ...options,
         headers: {
@@ -87,6 +117,12 @@ export const updateCampyear = <ThrowOnError extends boolean = false>(options: Op
  */
 export const activateCampyear = <ThrowOnError extends boolean = false>(options: Options<ActivateCampyearData, ThrowOnError>) => {
     return (options.client ?? _heyApiClient).post<ActivateCampyearResponses, ActivateCampyearErrors, ThrowOnError>({
+        security: [
+            {
+                scheme: 'bearer',
+                type: 'http'
+            }
+        ],
         url: '/campyear/api/v1/{year}/activate',
         ...options
     });
@@ -98,6 +134,12 @@ export const activateCampyear = <ThrowOnError extends boolean = false>(options: 
  */
 export const closeCampyear = <ThrowOnError extends boolean = false>(options: Options<CloseCampyearData, ThrowOnError>) => {
     return (options.client ?? _heyApiClient).post<CloseCampyearResponses, CloseCampyearErrors, ThrowOnError>({
+        security: [
+            {
+                scheme: 'bearer',
+                type: 'http'
+            }
+        ],
         url: '/campyear/api/v1/{year}/close',
         ...options
     });
@@ -109,6 +151,12 @@ export const closeCampyear = <ThrowOnError extends boolean = false>(options: Opt
  */
 export const openCampyear = <ThrowOnError extends boolean = false>(options: Options<OpenCampyearData, ThrowOnError>) => {
     return (options.client ?? _heyApiClient).post<OpenCampyearResponses, OpenCampyearErrors, ThrowOnError>({
+        security: [
+            {
+                scheme: 'bearer',
+                type: 'http'
+            }
+        ],
         url: '/campyear/api/v1/{year}/open',
         ...options
     });
