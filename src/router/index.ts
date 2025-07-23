@@ -11,6 +11,7 @@ import UserIndex from "@/views/users/UserIndex.vue";
 import UserCreate from "@/views/users/UserCreate.vue";
 import NotFoundView from "@/views/NotFoundView.vue";
 import VolunteerIndex from "@/views/volunteer/VolunteerIndex.vue";
+import VolunteerView from "@/views/volunteer/VolunteerView.vue";
 import VolunteerForm from "@/views/volunteer/VolunteerFormView.vue";
 import VolunteerPersonSearch from "@/views/volunteer/VolunteerPersonSearch.vue";
 
@@ -73,6 +74,13 @@ export function createVueRouter(app: App): Router {
         name: "volunteerIndex",
         component: VolunteerIndex,
         beforeEnter: createAuthGuard(app),
+      },
+      {
+        path: "/medewerker/:id",
+        name: "volunteerView",
+        component: VolunteerView,
+        beforeEnter: createAuthGuard(app),
+        props: true,
       },
       {
         path: "/medewerker/aanmaken",

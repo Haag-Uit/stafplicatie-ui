@@ -58,6 +58,17 @@ export type RequestUpdatePaymentRequest = {
     paymentStatus?: 'paid';
 };
 
+export type RequestUpdateVolunteerRequest = {
+    driversLicense: 'Geen' | 'B' | 'BE';
+    experience?: string;
+    firstAid: 'Geen' | 'EHBO' | 'BHV';
+    firstChoices: Array<string>;
+    motivation?: string;
+    properties?: string;
+    secondChoices: Array<string>;
+    study: 'hbo-ict' | 'cmd' | 'ads-ai';
+};
+
 export type ResponseApiError = {
     code: string;
     description: string;
@@ -833,7 +844,7 @@ export type UpdateVolunteerData = {
     /**
      * Updated volunteer object
      */
-    body: RequestCreateVolunteerRequest;
+    body: RequestUpdateVolunteerRequest;
     path: {
         /**
          * ID of the volunteer

@@ -266,8 +266,12 @@
 <script setup lang="ts">
 import {
   createVolunteer,
+  updateVolunteer,
   type CreateVolunteerError,
   type RequestCreateVolunteerRequest,
+  type RequestUpdateVolunteerRequest,
+  type ResponseVolunteerResponse,
+  type UpdateVolunteerError,
 } from "@/client";
 import { useValidationErrors } from "@/i18n/validation";
 import {
@@ -284,17 +288,28 @@ const toastStore = useToastStore();
 const { errors, setErrors, clearErrors } = useValidationErrors();
 const router = useRouter();
 
-const props = defineProps({
-  personId: Number,
-});
+const props = defineProps<{
+  personId: Number;
+  volunteer?: ResponseVolunteerResponse;
+}>();
 
-const formVolunteer = ref<RequestCreateVolunteerRequest>({
+interface VolunteerRequest {
+  driversLicense: "Geen" | "B" | "BE";
+  experience: string;
+  firstAid: "Geen" | "EHBO" | "BHV";
+  firstChoices: string[];
+  motivation: string;
+  properties: string;
+  secondChoices: string[];
+  study: "ads-ai" | "cmd" | "hbo-ict";
+}
+
+const formVolunteer = ref<VolunteerRequest>({
   driversLicense: "Geen",
   experience: "",
   firstAid: "Geen",
   firstChoices: [],
   motivation: "",
-  personId: 0,
   properties: "",
   secondChoices: [],
   study: "hbo-ict",
@@ -304,8 +319,37 @@ async function saveVolunteer() {
   // Clear previous errors
   clearErrors();
 
+  if (props.volunteer) {
+    // Update existing volunteer
+    const { error } = await updateVolunteer({
+      body: {
+        ...formVolunteer.value,
+      } as RequestUpdateVolunteerRequest,
+      path: { id: props.volunteer.id },
+    });
+    if (error) {
+      console.error("Error updating volunteer:", error);
+      if ((error as UpdateVolunteerError).fields) {
+        setErrors((error as UpdateVolunteerError).fields ?? {});
+        return;
+      }
+      toastStore.addToast({
+        message: `Fout bij het bijwerken van medewerker. ${error.message}`,
+        type: "error",
+      });
+      return;
+    }
+    toastStore.addToast({
+      message: "Medewerker succesvol bijgewerkt.",
+      type: "success",
+    });
+    return;
+  }
   const { error } = await createVolunteer({
-    body: formVolunteer.value,
+    body: {
+      ...formVolunteer.value,
+      personId: props.personId,
+    } as RequestCreateVolunteerRequest,
   });
   if (error) {
     console.error("Error creating volunteer:", error);
@@ -323,8 +367,17 @@ async function saveVolunteer() {
 }
 
 onMounted(() => {
-  if (props.personId) {
-    formVolunteer.value.personId = props.personId;
+  if (props.volunteer) {
+    formVolunteer.value = {
+      driversLicense: props.volunteer.driversLicense,
+      experience: props.volunteer.experience,
+      firstAid: props.volunteer.firstAid,
+      firstChoices: props.volunteer.firstChoices,
+      motivation: props.volunteer.motivation,
+      properties: props.volunteer.properties,
+      secondChoices: props.volunteer.secondChoices,
+      study: props.volunteer.study,
+    };
   }
 });
 </script>
