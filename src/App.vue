@@ -4,6 +4,7 @@ import { useAuth0 } from "@auth0/auth0-vue";
 import { client } from "./client/client.gen";
 import { client as haagAuthClient } from "@/haag-auth-api/client.gen";
 import { client as relationsClient } from "@/relations-api/client.gen";
+import { client as volunteersClient } from "@/volunteers-api/client.gen";
 import { CalendarDays, LayoutDashboard, Users } from "lucide-vue-next";
 import SidebarFooter from "./components/layout/SidebarFooter.vue";
 import ToastrContainer from "./components/ToastrContainer.vue";
@@ -30,6 +31,13 @@ const initiateClient = async () => {
 
     relationsClient.setConfig({
       baseUrl: import.meta.env.VITE_RELATIONS_API_URL,
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+
+    volunteersClient.setConfig({
+      baseUrl: import.meta.env.VITE_VOLUNTEERS_API_URL,
       headers: {
         Authorization: `Bearer ${accessToken}`,
       },
