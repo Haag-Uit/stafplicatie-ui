@@ -148,7 +148,7 @@ const attendance = computed(() => {
 });
 
 const latestPayment: ComputedRef<ResponsePaymentResponse> = computed(() => {
-  const payments = participant.value?.payments!;
+  const payments = participant.value?.payments || [];
   const latest = payments.reduce((prev, current) => {
     return new Date(prev.createdAt!) > new Date(current.createdAt!)
       ? prev

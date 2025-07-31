@@ -289,7 +289,7 @@ const { errors, setErrors, clearErrors } = useValidationErrors();
 const router = useRouter();
 
 const props = defineProps<{
-  personId: Number;
+  personId: number;
   volunteer?: VolunteersVolunteerResponse;
 }>();
 
