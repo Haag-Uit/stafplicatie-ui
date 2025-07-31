@@ -1,7 +1,7 @@
 import { describe, it, expect } from "vitest";
 
 import { mount } from "@vue/test-utils";
-import activeCampyearCard from "@/components/campyear/ActiveCampyearCard.vue";
+import activeCampyearCard from "../../campyear/ActiveCampyearCard.vue";
 
 describe("ActiveCampyearCard", () => {
   it("renders properly", () => {
