@@ -1,6 +1,6 @@
 <template>
   <div v-if="!loading && participant" class="p-4">
-    <PersonCard :person="participant.person" :campyear="campyear" />
+    <PersonCard :personId="participant.personId" :campyear="campyear" />
     <div class="card bg-base-100 w-full shadow-sm">
       <div class="card-body">
         <div>

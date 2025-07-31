@@ -1,8 +1,10 @@
 <script lang="ts" setup>
-import { deleteVolunteer } from "@/client";
 import type { PersonPersonResponse } from "@/relations-api";
 import { useToastStore } from "@/stores/toastr";
-import type { VolunteersVolunteerResponse } from "@/volunteers-api";
+import {
+  deleteVolunteer,
+  type VolunteersVolunteerResponse,
+} from "@/volunteers-api";
 import { Pencil, Trash2 } from "lucide-vue-next";
 import { type PropType } from "vue";
 

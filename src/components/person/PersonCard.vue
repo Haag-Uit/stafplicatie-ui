@@ -1,6 +1,6 @@
 <template>
   <div class="card card-border bg-base-100 w-full mb-5">
-    <div v-if="loading" class="card-body">
+    <div v-if="loading || !person" class="card-body">
       <div class="flex flex-col lg:flex-row gap-4">
         <div class="w-full lg:w-1/2 p-4 grid grid-cols-2">
           <div class="flex items-center pb-2">
@@ -46,7 +46,7 @@
     </div>
     <div v-else class="card-body">
       <h2 class="card-title pb-4">
-        {{ props.person.firstName }} {{ props.person.lastName }}
+        {{ fullname }}
       </h2>
       <div class="flex flex-col lg:flex-row gap-4">
         <div class="w-full lg:w-1/2 p-4 grid grid-cols-2 column">
@@ -76,22 +76,22 @@
         <div class="w-full lg:w-1/2 p-4 grid grid-cols-2 column">
           <div><Mail class="mr-2" /> Email:</div>
           <div>
-            {{ props.person.email }}
+            {{ person.email }}
           </div>
           <div><Phone class="mr-2" /> Telefoonnummer:</div>
           <div>
-            {{ props.person.phone }}
+            {{ person.phone }}
           </div>
           <div class="text-error"><ShieldPlus class="mr-2" /> Noodcontact:</div>
           <div class="text-error">
-            {{ props.person.emergencyContact }}
+            {{ person.emergencyContact }}
           </div>
           <div><MapPinHouse class="mr-2" /> Adres:</div>
           <div class="address-container">
-            <div>{{ props.person.address }}</div>
+            <div>{{ person.address }}</div>
             <div>
-              {{ props.person.zipCode }}
-              {{ props.person.city }}
+              {{ person.zipCode }}
+              {{ person.city }}
             </div>
           </div>
         </div>
@@ -110,30 +110,30 @@ import {
   MapPinHouse,
   Mail,
 } from "lucide-vue-next";
-import type {
-  ResponseCampyearResponse,
-  ResponsePersonResponse,
-} from "@/client";
+import type { ResponseCampyearResponse } from "@/client";
 import { formatLongDateNl } from "@/utils/formatDateNl";
 import { computed, onMounted, ref } from "vue";
-import type { PersonPersonResponse } from "@/relations-api";
+import { getPerson, type PersonPersonResponse } from "@/relations-api";
 
 const props = defineProps<{
-  person: ResponsePersonResponse | PersonPersonResponse;
+  personId: number;
   campyear?: ResponseCampyearResponse;
 }>();
 
 const loading = ref<boolean>(true);
+const person = ref<PersonPersonResponse>();
 
 const fullname = computed(() => {
-  const name = props.person.firstName;
+  if (!person.value) return "Onbekend";
+  const name = person.value.firstName;
   const firstLetter = name?.charAt(0).toUpperCase();
   const restOfName = name?.slice(1);
-  return `${firstLetter}${restOfName} ${props.person.lastName}`;
+  return `${firstLetter}${restOfName} ${person.value.lastName}`;
 });
 
 const dobCalcs = computed(() => {
-  const date = new Date(props.person.dateOfBirth);
+  if (!person.value) return { age: 0, dob: "Onbekend", onHu: 0 };
+  const date = new Date(person.value.dateOfBirth);
   const today = new Date();
   let age = today.getFullYear() - date.getFullYear();
   const monthDiff = today.getMonth() - date.getMonth();
@@ -158,7 +158,8 @@ const dobCalcs = computed(() => {
 });
 
 const gender = computed(() => {
-  switch (props.person.gender) {
+  if (!person.value) return "Onbekend";
+  switch (person.value.gender) {
     case "m":
       return "Man";
     case "v":
@@ -170,8 +171,17 @@ const gender = computed(() => {
   }
 });
 
-onMounted(() => {
-  // Any additional setup can be done here
+onMounted(async () => {
+  const { data, error } = await getPerson({
+    path: {
+      id: props.personId,
+    },
+  });
+  if (error) {
+    console.error("Error fetching person:", error);
+    return;
+  }
+  person.value = data.person;
   loading.value = false;
 });
 </script>

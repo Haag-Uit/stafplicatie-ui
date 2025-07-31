@@ -264,15 +264,6 @@
 </template>
 
 <script setup lang="ts">
-import {
-  createVolunteer,
-  updateVolunteer,
-  type CreateVolunteerError,
-  type RequestCreateVolunteerRequest,
-  type RequestUpdateVolunteerRequest,
-  type ResponseVolunteerResponse,
-  type UpdateVolunteerError,
-} from "@/client";
 import { useValidationErrors } from "@/i18n/validation";
 import {
   BriefcaseMedical,
@@ -283,6 +274,15 @@ import {
 import { onMounted, ref } from "vue";
 import { useToastStore } from "@/stores/toastr";
 import { useRouter } from "vue-router";
+import {
+  createVolunteer,
+  updateVolunteer,
+  type CreateVolunteerError,
+  type UpdateVolunteerError,
+  type VolunteersCreateVolunteerRequest,
+  type VolunteersUpdateVolunteerRequest,
+  type VolunteersVolunteerResponse,
+} from "@/volunteers-api";
 
 const toastStore = useToastStore();
 const { errors, setErrors, clearErrors } = useValidationErrors();
@@ -290,7 +290,7 @@ const router = useRouter();
 
 const props = defineProps<{
   personId: Number;
-  volunteer?: ResponseVolunteerResponse;
+  volunteer?: VolunteersVolunteerResponse;
 }>();
 
 interface VolunteerRequest {
@@ -324,7 +324,7 @@ async function saveVolunteer() {
     const { error } = await updateVolunteer({
       body: {
         ...formVolunteer.value,
-      } as RequestUpdateVolunteerRequest,
+      } as VolunteersUpdateVolunteerRequest,
       path: { id: props.volunteer.id },
     });
     if (error) {
@@ -349,7 +349,7 @@ async function saveVolunteer() {
     body: {
       ...formVolunteer.value,
       personId: props.personId,
-    } as RequestCreateVolunteerRequest,
+    } as VolunteersCreateVolunteerRequest,
   });
   if (error) {
     console.error("Error creating volunteer:", error);

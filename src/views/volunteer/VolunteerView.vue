@@ -1,9 +1,9 @@
 <template>
   <div class="" v-if="!loading">
     <div v-if="fetchedVolunteer">
-      <PersonCard :person="fetchedVolunteer.person" />
+      <PersonCard :personId="fetchedVolunteer.personId" />
       <VolunteerForm
-        :personId="fetchedVolunteer.person.id"
+        :personId="fetchedVolunteer.personId"
         :volunteer="fetchedVolunteer"
       />
     </div>
@@ -11,10 +11,13 @@
 </template>
 
 <script setup lang="ts">
-import { getVolunteer, type ResponseVolunteerResponse } from "@/client";
 import PersonCard from "@/components/person/PersonCard.vue";
 import VolunteerForm from "@/components/volunteers/VolunteerForm.vue";
 import { useToastStore } from "@/stores/toastr";
+import {
+  getVolunteer,
+  type VolunteersVolunteerResponse,
+} from "@/volunteers-api";
 import { onMounted, ref } from "vue";
 
 const toastStore = useToastStore();
@@ -25,27 +28,22 @@ const props = defineProps({
   },
 });
 const loading = ref(true);
-const fetchedVolunteer = ref<ResponseVolunteerResponse>();
+const fetchedVolunteer = ref<VolunteersVolunteerResponse>();
 
 onMounted(async () => {
-  try {
-    const { data, error } = await getVolunteer({
-      path: { id: Number(props.id) },
+  const { data, error } = await getVolunteer({
+    path: { id: Number(props.id) },
+  });
+  if (error) {
+    console.error("Error fetching volunteer:", error);
+    toastStore.addToast({
+      message: "Fout bij het ophalen van de medewerker",
+      type: "error",
     });
-    if (error) {
-      console.error("Error fetching volunteer:", error);
-      toastStore.addToast({
-        message: "Failed to fetch volunteer data.",
-        type: "error",
-      });
-      return;
-    }
-    fetchedVolunteer.value = data;
-  } catch (err) {
-    console.error("Unexpected error:", err);
-  } finally {
-    loading.value = false;
+    return;
   }
+  fetchedVolunteer.value = data.volunteer;
+  loading.value = false;
 });
 </script>
 
