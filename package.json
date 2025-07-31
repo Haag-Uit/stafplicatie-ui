@@ -19,7 +19,8 @@
     "stfpl-swagger": "openapi-ts -i http://localhost:8080/swagger/doc.json -o src/client",
     "ha-swagger": "openapi-ts -i http://localhost:8081/swagger/doc.json -o src/haag-auth-api",
     "relations-swagger": "openapi-ts -i http://localhost:8082/swagger/doc.json -o src/relations-api",
-    "swagger:update": "run-p -c -n stfpl-swagger ha-swagger relations-swagger"
+    "volunteers-swagger": "openapi-ts -i http://localhost:8083/swagger/doc.json -o src/volunteers-api",
+    "swagger:update": "run-p -c -n stfpl-swagger ha-swagger relations-swagger volunteers-swagger"
   },
   "dependencies": {
     "@auth0/auth0-vue": "^2.4.0",

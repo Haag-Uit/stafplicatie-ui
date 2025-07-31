@@ -49,21 +49,29 @@
 </template>
 
 <script setup lang="ts">
-import { getAllVolunteers, type GetAllVolunteersResponse } from "@/client";
 import { ref, onMounted, computed } from "vue";
 import { useToastStore } from "@/stores/toastr";
 import { UserSearch } from "lucide-vue-next";
 import { useRouter } from "vue-router";
 import VolunteersTableRow from "@/components/volunteers/VolunteersTableRow.vue";
+import {
+  listVolunteers,
+  type VolunteersVolunteerResponse,
+} from "@/volunteers-api";
+import { getPersonsByIds, type PersonPersonResponse } from "@/relations-api";
 
 const toastStore = useToastStore();
 const router = useRouter();
 
-const volunteers = ref<GetAllVolunteersResponse>([]);
+type VolunteerRow = VolunteersVolunteerResponse & {
+  person: PersonPersonResponse;
+};
+
+const volunteers = ref<VolunteerRow[]>([]);
 const loading = ref(true);
 const searchQuery = ref("");
 
-const sortVolunteers = (volunteers: GetAllVolunteersResponse) => {
+const sortVolunteers = (volunteers: VolunteerRow[]) => {
   return volunteers.slice(0).sort((a, b) => {
     const nameA = a.person.firstName.toLowerCase() || "";
     const nameB = b.person.firstName.toLowerCase() || "";
@@ -86,7 +94,7 @@ const filteredVolunteers = computed(() => {
 });
 
 const fetchVolunteers = async () => {
-  const { data, error } = await getAllVolunteers();
+  const { data, error } = await listVolunteers();
   if (error) {
     console.error("Error fetching volunteers:", error);
     toastStore.addToast({
@@ -95,7 +103,27 @@ const fetchVolunteers = async () => {
     });
     return;
   }
-  volunteers.value = data;
+  if (data.volunteers) {
+    const ids = data.volunteers.map((v) => v.personId);
+    const persons = await getPersonsByIds({
+      body: { ids },
+    });
+    if (persons.error) {
+      console.error("Error fetching persons:", persons.error);
+      toastStore.addToast({
+        message: "Fout bij het ophalen van medewerkers persoonsgegevens.",
+        type: "error",
+      });
+      return;
+    }
+    volunteers.value = data.volunteers.map((v) => {
+      const person = persons.data.persons?.find((p) => p.id === v.personId);
+      return {
+        ...v,
+        person: person || ({} as PersonPersonResponse), // Fallback if person not found
+      };
+    });
+  }
   loading.value = false;
 };
 

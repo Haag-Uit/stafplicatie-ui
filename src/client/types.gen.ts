@@ -8,18 +8,6 @@ export type RequestCampyearRequest = {
     year: number;
 };
 
-export type RequestCreateVolunteerRequest = {
-    driversLicense: 'Geen' | 'B' | 'BE';
-    experience?: string;
-    firstAid: 'Geen' | 'EHBO' | 'BHV';
-    firstChoices: Array<string>;
-    motivation?: string;
-    personId: number;
-    properties?: string;
-    secondChoices: Array<string>;
-    study: 'hbo-ict' | 'cmd' | 'ads-ai';
-};
-
 export type RequestRegistrationRequest = {
     accountCity?: string;
     accountName?: string;
@@ -56,17 +44,6 @@ export type RequestUpdateParticipantRequest = {
 
 export type RequestUpdatePaymentRequest = {
     paymentStatus?: 'paid';
-};
-
-export type RequestUpdateVolunteerRequest = {
-    driversLicense: 'Geen' | 'B' | 'BE';
-    experience?: string;
-    firstAid: 'Geen' | 'EHBO' | 'BHV';
-    firstChoices: Array<string>;
-    motivation?: string;
-    properties?: string;
-    secondChoices: Array<string>;
-    study: 'hbo-ict' | 'cmd' | 'ads-ai';
 };
 
 export type ResponseApiError = {
@@ -149,22 +126,6 @@ export type ResponsePersonResponse = {
     phone: string;
     updatedAt: string;
     zipCode: string;
-};
-
-export type ResponseVolunteerResponse = {
-    campyear: ResponseCampyearResponse;
-    campyearYear: number;
-    driversLicense: 'Geen' | 'B' | 'BE';
-    experience: string;
-    firstAid: 'Geen' | 'EHBO' | 'BHV';
-    firstChoices: Array<string>;
-    id: number;
-    motivation: string;
-    person: ResponsePersonResponse;
-    personId: number;
-    properties: string;
-    secondChoices: Array<string>;
-    study: 'hbo-ict' | 'cmd' | 'ads-ai';
 };
 
 export type GetAllCampyearsData = {
@@ -722,160 +683,6 @@ export type CreateRegistrationResponses = {
 };
 
 export type CreateRegistrationResponse = CreateRegistrationResponses[keyof CreateRegistrationResponses];
-
-export type GetAllVolunteersData = {
-    body?: never;
-    path?: never;
-    query?: never;
-    url: '/volunteer/api/v1/';
-};
-
-export type GetAllVolunteersErrors = {
-    /**
-     * Internal server error
-     */
-    500: ResponseApiError;
-};
-
-export type GetAllVolunteersError = GetAllVolunteersErrors[keyof GetAllVolunteersErrors];
-
-export type GetAllVolunteersResponses = {
-    /**
-     * All volunteers
-     */
-    200: Array<ResponseVolunteerResponse>;
-};
-
-export type GetAllVolunteersResponse = GetAllVolunteersResponses[keyof GetAllVolunteersResponses];
-
-export type CreateVolunteerData = {
-    /**
-     * Volunteer object to be created
-     */
-    body: RequestCreateVolunteerRequest;
-    path?: never;
-    query?: never;
-    url: '/volunteer/api/v1/';
-};
-
-export type CreateVolunteerErrors = {
-    /**
-     * Invalid request
-     */
-    400: ResponseApiError;
-    /**
-     * Internal server error
-     */
-    500: ResponseApiError;
-};
-
-export type CreateVolunteerError = CreateVolunteerErrors[keyof CreateVolunteerErrors];
-
-export type CreateVolunteerResponses = {
-    /**
-     * Volunteer created
-     */
-    201: ResponseVolunteerResponse;
-};
-
-export type CreateVolunteerResponse = CreateVolunteerResponses[keyof CreateVolunteerResponses];
-
-export type DeleteVolunteerData = {
-    body?: never;
-    path: {
-        /**
-         * ID of the volunteer
-         */
-        id: number;
-    };
-    query?: never;
-    url: '/volunteer/api/v1/{id}';
-};
-
-export type DeleteVolunteerErrors = {
-    /**
-     * Internal server error
-     */
-    500: ResponseApiError;
-};
-
-export type DeleteVolunteerError = DeleteVolunteerErrors[keyof DeleteVolunteerErrors];
-
-export type DeleteVolunteerResponses = {
-    /**
-     * Volunteer deleted
-     */
-    204: string;
-};
-
-export type DeleteVolunteerResponse = DeleteVolunteerResponses[keyof DeleteVolunteerResponses];
-
-export type GetVolunteerData = {
-    body?: never;
-    path: {
-        /**
-         * ID of the volunteer
-         */
-        id: number;
-    };
-    query?: never;
-    url: '/volunteer/api/v1/{id}';
-};
-
-export type GetVolunteerErrors = {
-    /**
-     * Volunteer not found
-     */
-    404: ResponseApiError;
-};
-
-export type GetVolunteerError = GetVolunteerErrors[keyof GetVolunteerErrors];
-
-export type GetVolunteerResponses = {
-    /**
-     * Volunteer details
-     */
-    200: ResponseVolunteerResponse;
-};
-
-export type GetVolunteerResponse = GetVolunteerResponses[keyof GetVolunteerResponses];
-
-export type UpdateVolunteerData = {
-    /**
-     * Updated volunteer object
-     */
-    body: RequestUpdateVolunteerRequest;
-    path: {
-        /**
-         * ID of the volunteer
-         */
-        id: number;
-    };
-    query?: never;
-    url: '/volunteer/api/v1/{id}';
-};
-
-export type UpdateVolunteerErrors = {
-    /**
-     * Invalid request
-     */
-    400: ResponseApiError;
-    /**
-     * Internal server error
-     */
-    500: ResponseApiError;
-};
-
-export type UpdateVolunteerError = UpdateVolunteerErrors[keyof UpdateVolunteerErrors];
-
-export type UpdateVolunteerResponses = {
-    /**
-     * Volunteer updated
-     */
-    200: ResponseVolunteerResponse;
-};
-
-export type UpdateVolunteerResponse = UpdateVolunteerResponses[keyof UpdateVolunteerResponses];
 
 export type ClientOptions = {
     baseUrl: 'http://localhost:8080' | (string & {});
