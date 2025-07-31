@@ -2,5 +2,41 @@
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
     "config:recommended"
+  ],
+  "packageRules": [
+     {
+      "labels": ["renovate-fe", "dev-deps"],
+      "matchDatasources": ["npm"],
+      "matchDepTypes": ["devDependencies"],
+      "matchCurrentVersion": ">=1",
+      "matchUpdateTypes": ["patch", "minor"],
+      "groupName": "developer dependencies (non-major)",
+      "groupSlug": "dev-dependencies"
+    },
+    {
+      "labels": ["renovate-fe", "prod-deps"],
+      "matchDatasources": ["npm"],
+      "matchCurrentVersion": ">=1",
+      "matchDepTypes": ["dependencies"],
+      "matchUpdateTypes": ["patch", "minor"],
+      "groupName": "production dependencies (non-major)",
+      "groupSlug": "dependencies"
+    },
+    {
+      "labels": ["renovate-fe", "breaking", "major-upgrade"],
+      "matchDatasources": ["npm"],
+      "matchDepTypes": ["dependencies"],
+      "matchUpdateTypes": ["major"]
+    },
+    {
+      "labels": ["renovate-fe", "breaking", "not-yet-stable-upgrade"],
+      "registryUrls": [
+        "https://europe-npm.pkg.dev/nordnet-artifacts/npm-virtual/"
+      ],
+      "matchDatasources": ["npm"],
+      "matchCurrentVersion": "<1",
+      "matchDepTypes": ["dependencies"],
+      "matchUpdateTypes": ["patch", "minor"]
+    }
   ]
 }
