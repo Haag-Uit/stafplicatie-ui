@@ -30,9 +30,6 @@
     },
     {
       "labels": ["renovate-fe", "breaking", "not-yet-stable-upgrade"],
-      "registryUrls": [
-        "https://europe-npm.pkg.dev/nordnet-artifacts/npm-virtual/"
-      ],
       "matchDatasources": ["npm"],
       "matchCurrentVersion": "<1",
       "matchDepTypes": ["dependencies"],
