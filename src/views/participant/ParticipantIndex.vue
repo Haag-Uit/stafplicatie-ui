@@ -46,20 +46,24 @@
 </template>
 
 <script setup lang="ts">
-import { getAllParticipants, type GetAllParticipantsResponse } from "@/client";
+import { getAllParticipants, type ResponseParticipantResponse } from "@/client";
 import { ref, onMounted, computed } from "vue";
 import { useToastStore } from "@/stores/toastr";
 import ParticipantTableRow from "@/components/participant/ParticipantTableRow.vue";
 import ExportParticipantsButton from "@/components/export/ExportParticipantsButton.vue";
 import { UserSearch } from "lucide-vue-next";
+import { getPersonsByIds, type PersonPersonResponse } from "@/relations-api";
 
 const toastStore = useToastStore();
 
-const participants = ref<GetAllParticipantsResponse>([]);
+type ParticipantRow = ResponseParticipantResponse & {
+  person: PersonPersonResponse;
+};
+const participants = ref<ParticipantRow[]>([]);
 const loading = ref(true);
 const searchQuery = ref("");
 
-const sortParticipants = (participants: GetAllParticipantsResponse) => {
+const sortParticipants = (participants: ParticipantRow[]) => {
   return participants.slice(0).sort((a, b) => {
     const nameA = a.person.firstName.toLowerCase() || "";
     const nameB = b.person.firstName.toLowerCase() || "";
@@ -77,7 +81,24 @@ const fetchParticipants = async () => {
     });
     return;
   }
-  participants.value = data ?? [];
+  if (data) {
+    const ids = data.map((p) => p.personId);
+    const persons = await getPersonsByIds({ body: { ids } });
+    if (persons.error) {
+      console.error("Error fetching persons:", persons.error);
+      toastStore.addToast({
+        message: "Fout bij het ophalen van personen.",
+        type: "error",
+      });
+      return;
+    }
+    participants.value = data.map((p) => ({
+      ...p,
+      person:
+        persons.data.persons?.find((person) => person.id === p.personId) ||
+        ({} as PersonPersonResponse),
+    }));
+  }
   loading.value = false;
 };
 
