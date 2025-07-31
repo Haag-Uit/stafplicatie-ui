@@ -1,4 +1,4 @@
-FROM nginx:alpine@sha256:65645c7bb6a0661892a8b03b89d0743208a18dd2f3f17a54ef4b76fb8e2f2a10
+FROM nginx:alpine@sha256:d67ea0d64d518b1bb04acde3b00f722ac3e9764b3209a9b0a98924ba35e4b779
 
 COPY ./dist /usr/share/nginx/html
 COPY ./default.conf /etc/nginx/conf.d/default.conf
