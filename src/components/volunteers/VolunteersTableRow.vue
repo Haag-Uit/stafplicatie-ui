@@ -1,12 +1,16 @@
 <script lang="ts" setup>
-import { deleteVolunteer, type GetVolunteerResponse } from "@/client";
+import { deleteVolunteer } from "@/client";
+import type { PersonPersonResponse } from "@/relations-api";
 import { useToastStore } from "@/stores/toastr";
+import type { VolunteersVolunteerResponse } from "@/volunteers-api";
 import { Pencil, Trash2 } from "lucide-vue-next";
 import { type PropType } from "vue";
 
 const props = defineProps({
   volunteer: {
-    type: Object as PropType<GetVolunteerResponse>,
+    type: Object as PropType<
+      VolunteersVolunteerResponse & { person: PersonPersonResponse }
+    >,
     required: true,
   },
 });

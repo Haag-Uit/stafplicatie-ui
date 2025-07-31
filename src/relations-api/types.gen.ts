@@ -8,6 +8,15 @@ export type PersonGetPersonResponse = {
     person?: PersonPersonResponse;
 };
 
+export type PersonGetPersonsByIdsRequest = {
+    [key: string]: unknown;
+};
+
+export type PersonGetPersonsByIdsResponse = {
+    count?: number;
+    persons?: Array<PersonPersonResponse>;
+};
+
 export type PersonListPersonsResponse = {
     count?: number;
     persons?: Array<PersonPersonResponse>;
@@ -132,6 +141,42 @@ export type CreatePersonResponses = {
 };
 
 export type CreatePersonResponse = CreatePersonResponses[keyof CreatePersonResponses];
+
+export type GetPersonsByIdsData = {
+    /**
+     * Array of person IDs
+     */
+    body: PersonGetPersonsByIdsRequest;
+    path?: never;
+    query?: never;
+    url: '/api/v1/batch';
+};
+
+export type GetPersonsByIdsErrors = {
+    /**
+     * Bad request - invalid JSON or empty IDs array
+     */
+    400: PersonRestError;
+    /**
+     * Validation error - invalid field values
+     */
+    422: PersonRestError;
+    /**
+     * Internal server error
+     */
+    500: PersonRestError;
+};
+
+export type GetPersonsByIdsError = GetPersonsByIdsErrors[keyof GetPersonsByIdsErrors];
+
+export type GetPersonsByIdsResponses = {
+    /**
+     * Persons details retrieved successfully
+     */
+    200: PersonGetPersonsByIdsResponse;
+};
+
+export type GetPersonsByIdsResponse = GetPersonsByIdsResponses[keyof GetPersonsByIdsResponses];
 
 export type GetPersonByEmailData = {
     body?: never;
