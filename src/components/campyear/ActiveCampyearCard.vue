@@ -64,13 +64,13 @@
 import {
   closeCampyear,
   openCampyear,
-  type response_CampyearResponse,
+  type ResponseCampyearResponse,
 } from "@/client";
 import { formatDateNl } from "@/utils/formatDateNl";
 import { computed } from "vue";
 
 const props = defineProps<{
-  activeCampyear: response_CampyearResponse;
+  activeCampyear: ResponseCampyearResponse;
   yearList: number[];
 }>();
 
