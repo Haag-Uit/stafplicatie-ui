@@ -8,14 +8,28 @@
             <h2 class="card-title">Inschrijvingen</h2>
             <ExportParticipantsButton />
           </div>
-          <label class="input w-full lg:w-1/2">
-            <span class="label"><UserSearch /></span>
-            <input
-              type="text"
-              placeholder="Zoek op naam of email"
-              v-model="searchQuery"
-            />
-          </label>
+          <div class="flex-col lg:flex-row flex gap-2 items-center">
+            <label class="input w-full lg:w-1/2">
+              <span class="label"><UserSearch /></span>
+              <input
+                type="text"
+                placeholder="Zoek op naam of email"
+                v-model="searchQuery"
+              />
+            </label>
+            <fieldset class="fieldset bg-base-100 p-4">
+              <!-- <legend class="fieldset-legend">Login options</legend> -->
+              <label class="label">
+                <input
+                  type="checkbox"
+                  :checked="showCancelled"
+                  class="toggle toggle-accent"
+                  @change="showCancelled = !showCancelled"
+                />
+                Toon afgemelde deelnemers
+              </label>
+            </fieldset>
+          </div>
           <div
             class="overflow-x-auto rounded-box border border-base-content/5 bg-base-100"
           >
@@ -62,6 +76,7 @@ type ParticipantRow = ResponseParticipantResponse & {
 const participants = ref<ParticipantRow[]>([]);
 const loading = ref(true);
 const searchQuery = ref("");
+const showCancelled = ref<boolean>(false);
 
 const sortParticipants = (participants: ParticipantRow[]) => {
   return participants.slice(0).sort((a, b) => {
@@ -103,11 +118,15 @@ const fetchParticipants = async () => {
 };
 
 const filteredParticipants = computed(() => {
+  let p = participants.value;
+  if (!showCancelled.value) {
+    p = p.filter((participant) => participant.attendance == "open");
+  }
   if (!searchQuery.value.trim()) {
-    return sortParticipants(participants.value);
+    return sortParticipants(p);
   }
   const query = searchQuery.value.toLowerCase();
-  const filtered = participants.value.filter(
+  const filtered = p.filter(
     (participant) =>
       (
         participant.person.firstName.toLowerCase() +

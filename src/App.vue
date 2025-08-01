@@ -119,9 +119,13 @@ watch(
               <li class="menu-title">Algemeen</li>
               <li>
                 <RouterLink to="/"><LayoutDashboard /> Dashboard</RouterLink>
+              </li>
+              <li>
                 <RouterLink to="/kampjaar">
                   <CalendarDays /> Kampjaren
                 </RouterLink>
+              </li>
+              <li>
                 <RouterLink to="/inschrijving">
                   <Users /> Inschrijvingen
                 </RouterLink>
