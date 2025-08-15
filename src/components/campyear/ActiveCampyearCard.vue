@@ -64,13 +64,16 @@
 import {
   closeCampyear,
   openCampyear,
-  type ResponseCampyearResponse,
-} from "@/client";
+  type CampyearCampyearResponse,
+} from "@/campyear-api";
+import { useToastStore } from "@/stores/toastr";
 import { formatDateNl } from "@/utils/formatDateNl";
 import { computed } from "vue";
 
+const toastStore = useToastStore();
+
 const props = defineProps<{
-  activeCampyear: ResponseCampyearResponse;
+  activeCampyear: CampyearCampyearResponse;
   yearList: number[];
 }>();
 
@@ -89,6 +92,10 @@ const openClose = async () => {
     emit("updateOpenClose", !props.activeCampyear.open);
   } catch (error) {
     console.error("Error opening/closing camp year:", error);
+    toastStore.addToast({
+      message: "Fout bij het openen/sluiten van kampjaar.",
+      type: "error",
+    });
   }
 };
 

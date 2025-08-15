@@ -97,14 +97,14 @@
 </template>
 
 <script setup lang="ts">
+import { onMounted, ref } from "vue";
+import { useToastStore } from "@/stores/toastr";
+import { useRouter } from "vue-router";
 import {
   getCampyear,
   updateCampyear,
   type UpdateCampyearError,
-} from "@/client";
-import { onMounted, ref } from "vue";
-import { useToastStore } from "@/stores/toastr";
-import { useRouter } from "vue-router";
+} from "@/campyear-api";
 
 const toastStore = useToastStore();
 const router = useRouter();
@@ -136,24 +136,21 @@ onMounted(async () => {
     });
     return;
   }
-  start.value = new Date(data.start).toLocaleDateString();
-  end.value = new Date(data.end).toLocaleDateString();
-  participationFee.value = String(data.participationFee);
-  insuranceFee.value = String(data.insuranceFee);
+  start.value = new Date(data.campyear.start).toLocaleDateString();
+  end.value = new Date(data.campyear.end).toLocaleDateString();
+  participationFee.value = String(data.campyear.participationFee);
+  insuranceFee.value = String(data.campyear.insuranceFee);
 });
 
 const save = async () => {
   const { data, error } = await updateCampyear({
     path: { year: Number(props.year) },
     body: {
-      start: start.value,
-      end: end.value,
+      start: start.value ?? "",
+      end: end.value ?? "",
       participationFee:
-        participationFee.value === ""
-          ? undefined
-          : Number(participationFee.value),
-      insuranceFee:
-        insuranceFee.value === "" ? undefined : Number(insuranceFee.value),
+        participationFee.value === "" ? -1 : Number(participationFee.value),
+      insuranceFee: insuranceFee.value === "" ? -1 : Number(insuranceFee.value),
     },
   });
   if (error) {
@@ -164,7 +161,7 @@ const save = async () => {
     return;
   }
   toastStore.addToast({
-    message: `Kampjaar ${data.year} gewijzigd`,
+    message: `Kampjaar ${data.campyear.year} gewijzigd`,
     type: "success",
   });
   router.push({ name: "campyearIndex" });

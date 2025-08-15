@@ -117,6 +117,31 @@ export type CreateCampyearResponses = {
 
 export type CreateCampyearResponse = CreateCampyearResponses[keyof CreateCampyearResponses];
 
+export type GetActiveCampyearData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/api/v1/active';
+};
+
+export type GetActiveCampyearErrors = {
+    /**
+     * Campyear not found
+     */
+    404: PersonRestError;
+};
+
+export type GetActiveCampyearError = GetActiveCampyearErrors[keyof GetActiveCampyearErrors];
+
+export type GetActiveCampyearResponses = {
+    /**
+     * Active campyear retrieved successfully
+     */
+    200: CampyearGetCampyearResponse;
+};
+
+export type GetActiveCampyearResponse = GetActiveCampyearResponses[keyof GetActiveCampyearResponses];
+
 export type DeleteCampyearData = {
     body?: never;
     path: {

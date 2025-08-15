@@ -55,23 +55,22 @@
 </template>
 
 <script setup lang="ts">
-import {
-  getAllCampyears,
-  type GetAllCampyearsResponse,
-  activateCampyear,
-  type ResponseCampyearResponse,
-} from "@/client";
 import CampyearTableRow from "@/components/campyear/CampyearTableRow.vue";
 import { ref, onMounted, computed } from "vue";
 import { useToastStore } from "@/stores/toastr";
 import ActiveCampyearCard from "@/components/campyear/ActiveCampyearCard.vue";
+import {
+  activateCampyear,
+  listCampyears,
+  type CampyearCampyearResponse,
+} from "@/campyear-api";
 
 const toastStore = useToastStore();
 
-const campyears = ref<GetAllCampyearsResponse>([]);
+const campyears = ref<CampyearCampyearResponse[]>([]);
 const loading = ref(true);
 
-const activeCampyear = computed((): ResponseCampyearResponse | undefined =>
+const activeCampyear = computed((): CampyearCampyearResponse | undefined =>
   campyears.value.find((campyear) => campyear.active === true)
 );
 
@@ -89,7 +88,7 @@ const activate = async (year: number) => {
 };
 
 const fetchCampyears = async () => {
-  const { data, error } = await getAllCampyears();
+  const { data, error } = await listCampyears();
   if (error) {
     console.error("Error fetching camp years:", error);
     toastStore.addToast({
@@ -98,7 +97,7 @@ const fetchCampyears = async () => {
     });
     return;
   }
-  campyears.value = data ?? [];
+  campyears.value = data.campyears ?? [];
 };
 
 const openClose = async (open: boolean) => {
@@ -111,10 +110,6 @@ const openClose = async (open: boolean) => {
     });
   } catch (error) {
     console.error("Error opening/closing camp year:", error);
-    toastStore.addToast({
-      message: "Fout bij het openen/sluiten van kampjaar.",
-      type: "error",
-    });
   }
 };
 

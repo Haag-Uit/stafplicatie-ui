@@ -1,9 +1,9 @@
 <script lang="ts" setup>
-import { deleteCampyear } from "@/client";
 import { computed } from "vue";
 import { Trash2, Pencil } from "lucide-vue-next";
 import { useToastStore } from "@/stores/toastr";
 import { formatDateNl } from "@/utils/formatDateNl"; // <-- import the new util
+import { deleteCampyear } from "@/campyear-api";
 
 const toastStore = useToastStore();
 
