@@ -5,6 +5,7 @@ import { client } from "./client/client.gen";
 import { client as haagAuthClient } from "@/haag-auth-api/client.gen";
 import { client as relationsClient } from "@/relations-api/client.gen";
 import { client as volunteersClient } from "@/volunteers-api/client.gen";
+import { client as campyearClient } from "@/campyear-api/client.gen";
 import { CalendarDays, LayoutDashboard, Users } from "lucide-vue-next";
 import SidebarFooter from "./components/layout/SidebarFooter.vue";
 import ToastrContainer from "./components/ToastrContainer.vue";
@@ -30,7 +31,7 @@ const initiateClient = async () => {
     });
 
     relationsClient.setConfig({
-      baseUrl: import.meta.env.VITE_RELATIONS_API_URL,
+      baseUrl: import.meta.env.VITE_HUP_API_URL,
       headers: {
         Authorization: `Bearer ${accessToken}`,
       },
@@ -38,6 +39,13 @@ const initiateClient = async () => {
 
     volunteersClient.setConfig({
       baseUrl: import.meta.env.VITE_VOLUNTEERS_API_URL,
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+
+    campyearClient.setConfig({
+      baseUrl: import.meta.env.VITE_CAMPYEAR_API_URL,
       headers: {
         Authorization: `Bearer ${accessToken}`,
       },
