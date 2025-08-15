@@ -18,9 +18,10 @@
     "openapi-ts": "openapi-ts",
     "stfpl-swagger": "openapi-ts -i http://localhost:8080/swagger/doc.json -o src/client",
     "ha-swagger": "openapi-ts -i http://localhost:8081/swagger/doc.json -o src/haag-auth-api",
-    "relations-swagger": "openapi-ts -i http://localhost:8082/swagger/doc.json -o src/relations-api",
+    "hup-swagger": "openapi-ts -i http://localhost:8082/swagger/doc.json -o src/relations-api",
     "volunteers-swagger": "openapi-ts -i http://localhost:8083/swagger/doc.json -o src/volunteers-api",
-    "swagger:update": "run-p -c -n stfpl-swagger ha-swagger relations-swagger volunteers-swagger"
+    "campyear-swagger": "openapi-ts -i http://localhost:8084/swagger/doc.json -o src/campyear-api",
+    "swagger:update": "run-p -c -n stfpl-swagger ha-swagger hup-swagger volunteers-swagger campyear-swagger"
   },
   "dependencies": {
     "@auth0/auth0-vue": "^2.4.0",
