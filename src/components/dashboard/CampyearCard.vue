@@ -29,11 +29,11 @@
 
 <script setup lang="ts">
 import { ref, onMounted, computed } from "vue";
-import { getAllCampyears, type ResponseCampyearResponse } from "@/client";
 import { formatDateNl } from "@/utils/formatDateNl";
 import { CalendarDays } from "lucide-vue-next";
+import { listCampyears, type CampyearCampyearResponse } from "@/campyear-api";
 
-const activeCampyear = ref<ResponseCampyearResponse>();
+const activeCampyear = ref<CampyearCampyearResponse>();
 const loading = ref(true);
 
 const formattedDates = computed(() => {
@@ -49,13 +49,13 @@ const formattedDates = computed(() => {
 });
 
 onMounted(async () => {
-  const { data, error } = await getAllCampyears();
+  const { data, error } = await listCampyears();
   if (error) {
     console.error("Error fetching camp years:", error);
     return;
   }
-  activeCampyear.value = data?.find(
-    (yr: ResponseCampyearResponse) => yr.active === true
+  activeCampyear.value = data.campyears.find(
+    (yr: CampyearCampyearResponse) => yr.active === true
   );
   loading.value = false;
 });

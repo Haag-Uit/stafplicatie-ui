@@ -104,10 +104,8 @@
 
 <script setup lang="ts">
 import {
-  getCampyear,
   getParticipant,
   updateParticipant,
-  type GetCampyearResponse,
   type GetParticipantResponse,
   type RequestUpdateParticipantRequest,
   type ResponsePaymentResponse,
@@ -126,13 +124,14 @@ import {
 } from "lucide-vue-next";
 import { formatLongDateNl } from "@/utils/formatDateNl";
 import PersonCard from "@/components/person/PersonCard.vue";
+import { getCampyear, type CampyearCampyearResponse } from "@/campyear-api";
 
 const toastStore = useToastStore();
 const props = defineProps<{ id: string }>();
 const loading = ref(true);
 
 const participant = ref<GetParticipantResponse>();
-const campyear = ref<GetCampyearResponse>();
+const campyear = ref<CampyearCampyearResponse>();
 type ShirtSizes = "XS" | "S" | "M" | "L" | "XL";
 const shirtSize = ref<ShirtSizes>("M");
 
@@ -212,7 +211,7 @@ async function fetchCampyear() {
     console.error("Error fetching camp year:", campyearError.message);
     return;
   }
-  campyear.value = campyearData;
+  campyear.value = campyearData.campyear;
 }
 
 onMounted(async () => {
