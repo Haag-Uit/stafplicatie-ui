@@ -13,7 +13,6 @@ export type PersonRestError = {
 };
 
 export type VolunteersCreateVolunteerRequest = {
-    campyearYear: number;
     driversLicense: 'Geen' | 'B' | 'BE';
     experience?: string;
     firstAid: 'Geen' | 'EHBO' | 'BHV';
