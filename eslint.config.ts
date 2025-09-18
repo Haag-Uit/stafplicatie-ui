@@ -28,6 +28,7 @@ export default defineConfigWithVueTs(
     "**/src/haag-auth-api/**",
     "**/src/relations-api/**",
     "**/src/volunteers-api/**",
+    "**/src/campyear-api/**",
   ]),
 
   pluginVue.configs["flat/essential"],
