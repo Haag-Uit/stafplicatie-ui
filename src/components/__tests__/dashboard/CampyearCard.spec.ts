@@ -1,16 +1,19 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { mount } from "@vue/test-utils";
 import CampyearCard from "../../dashboard/CampyearCard.vue";
-import type { ResponseCampyearResponse } from "../../../client";
+import {
+  listCampyears,
+  PersonRestError,
+  type CampyearCampyearResponse,
+} from "../../../campyear-api";
 
 // Mock the entire client module
-vi.mock("../../../client", () => ({
-  getAllCampyears: vi.fn(),
+vi.mock("../../../campyear-api", () => ({
+  listCampyears: vi.fn(),
 }));
 
 // Import the mocked function
-import { getAllCampyears } from "../../../client";
-const mockedGetAllCampyears = vi.mocked(getAllCampyears);
+const mockedGetAllCampyears = vi.mocked(listCampyears);
 
 describe("CampyearCard", () => {
   beforeEach(() => {
@@ -19,7 +22,7 @@ describe("CampyearCard", () => {
 
   it("renders properly with active campyear", async () => {
     // Mock successful API response
-    const mockCampyears: ResponseCampyearResponse[] = [
+    const mockCampyears: CampyearCampyearResponse[] = [
       {
         year: 2025,
         start: "2025-01-01",
@@ -28,6 +31,8 @@ describe("CampyearCard", () => {
         open: true,
         participationFee: 100,
         insuranceFee: 10,
+        createdAt: "2024-01-01T00:00:00Z",
+        updatedAt: "2024-01-01T00:00:00Z",
       },
       {
         year: 2024,
@@ -37,14 +42,18 @@ describe("CampyearCard", () => {
         open: false,
         participationFee: 100,
         insuranceFee: 10,
+        createdAt: "2023-01-01T00:00:00Z",
+        updatedAt: "2023-01-01T00:00:00Z",
       },
     ];
 
     // Mock the return value to match what the component expects
     mockedGetAllCampyears.mockResolvedValue({
-      data: mockCampyears,
+      data: { campyears: mockCampyears, count: 2 },
       error: undefined,
-    } as never);
+      request: {} as Request,
+      response: {} as Response,
+    });
 
     const wrapper = mount(CampyearCard);
 
@@ -61,8 +70,14 @@ describe("CampyearCard", () => {
     // Mock API error
     mockedGetAllCampyears.mockResolvedValue({
       data: undefined,
-      error: "API Error",
-    } as never);
+      error: {
+        code: "500",
+        message: "API Error",
+        description: "An error occurred",
+      } as PersonRestError,
+      request: {} as Request,
+      response: {} as Response,
+    });
 
     const wrapper = mount(CampyearCard);
 

@@ -1,4 +1,6 @@
 import { describe, it, expect } from "vitest";
+import { createTestingPinia } from "@pinia/testing";
+import { vi } from "vitest";
 
 import { mount } from "@vue/test-utils";
 import activeCampyearCard from "../../campyear/ActiveCampyearCard.vue";
@@ -15,8 +17,17 @@ describe("ActiveCampyearCard", () => {
           open: false,
           insuranceFee: 10,
           participationFee: 100,
+          createdAt: "2023-01-01T00:00:00Z",
+          updatedAt: "2023-01-01T00:00:00Z",
         },
         yearList: [],
+      },
+      global: {
+        plugins: [
+          createTestingPinia({
+            createSpy: vi.fn,
+          }),
+        ],
       },
     });
     expect(wrapper.text()).toContain("2025");

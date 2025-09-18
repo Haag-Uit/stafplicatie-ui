@@ -50,6 +50,7 @@ const formattedDates = computed(() => {
 
 onMounted(async () => {
   const { data, error } = await listCampyears();
+  console.log(error);
   if (error) {
     console.error("Error fetching camp years:", error);
     return;
