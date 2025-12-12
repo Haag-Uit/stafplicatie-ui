@@ -12,6 +12,15 @@ export type PersonRestError = {
     };
 };
 
+export type VolunteersAttendanceResponse = {
+    individual: number;
+    meetingFour: number;
+    meetingOne: number;
+    meetingThree: number;
+    meetingTwo: number;
+    volunteerId: number;
+};
+
 export type VolunteersCreateVolunteerRequest = {
     driversLicense: 'Geen' | 'B' | 'BE';
     experience?: string;
@@ -37,6 +46,18 @@ export type VolunteersListVolunteersResponse = {
     volunteers?: Array<VolunteersVolunteerResponse>;
 };
 
+export type VolunteersUpdateAttendanceRequest = {
+    individual: number;
+    meetingFour: number;
+    meetingOne: number;
+    meetingThree: number;
+    meetingTwo: number;
+};
+
+export type VolunteersUpdateAttendanceResponse = {
+    attendance?: VolunteersAttendanceResponse;
+};
+
 export type VolunteersUpdateVolunteerRequest = {
     driversLicense: 'Geen' | 'B' | 'BE';
     experience?: string;
@@ -53,6 +74,7 @@ export type VolunteersUpdateVolunteerResponse = {
 };
 
 export type VolunteersVolunteerResponse = {
+    attendance?: VolunteersAttendanceResponse;
     campyearYear: number;
     driversLicense: 'Geen' | 'B' | 'BE';
     experience: string;
@@ -101,6 +123,47 @@ export type CreateVolunteerResponses = {
 };
 
 export type CreateVolunteerResponse = CreateVolunteerResponses[keyof CreateVolunteerResponses];
+
+export type UpdateAttendanceData = {
+    /**
+     * Updated volunteer attendance data
+     */
+    body: VolunteersUpdateAttendanceRequest;
+    path: {
+        /**
+         * Volunteer ID
+         */
+        id: number;
+    };
+    query?: never;
+    url: '/api/v1/attendance/{id}';
+};
+
+export type UpdateAttendanceErrors = {
+    /**
+     * Bad request - invalid ID
+     */
+    400: PersonRestError;
+    /**
+     * Validation error - invalid field values
+     */
+    422: PersonRestError;
+    /**
+     * Internal server error
+     */
+    500: PersonRestError;
+};
+
+export type UpdateAttendanceError = UpdateAttendanceErrors[keyof UpdateAttendanceErrors];
+
+export type UpdateAttendanceResponses = {
+    /**
+     * Successfully updated volunteer attendance
+     */
+    200: VolunteersUpdateAttendanceResponse;
+};
+
+export type UpdateAttendanceResponse = UpdateAttendanceResponses[keyof UpdateAttendanceResponses];
 
 export type ListVolunteersData = {
     body?: never;
