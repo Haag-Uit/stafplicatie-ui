@@ -66,31 +66,6 @@ export type VolunteersVolunteerResponse = {
     study: 'hbo-ict' | 'cmd' | 'ads-ai';
 };
 
-export type ListVolunteersData = {
-    body?: never;
-    path?: never;
-    query?: never;
-    url: '/api/v1/';
-};
-
-export type ListVolunteersErrors = {
-    /**
-     * Internal server error
-     */
-    500: PersonRestError;
-};
-
-export type ListVolunteersError = ListVolunteersErrors[keyof ListVolunteersErrors];
-
-export type ListVolunteersResponses = {
-    /**
-     * List of volunteers retrieved successfully
-     */
-    200: VolunteersListVolunteersResponse;
-};
-
-export type ListVolunteersResponse = ListVolunteersResponses[keyof ListVolunteersResponses];
-
 export type CreateVolunteerData = {
     /**
      * Volunteer data
@@ -126,6 +101,40 @@ export type CreateVolunteerResponses = {
 };
 
 export type CreateVolunteerResponse = CreateVolunteerResponses[keyof CreateVolunteerResponses];
+
+export type ListVolunteersData = {
+    body?: never;
+    path: {
+        /**
+         * Camp year
+         */
+        year: number;
+    };
+    query?: never;
+    url: '/api/v1/list/{year}';
+};
+
+export type ListVolunteersErrors = {
+    /**
+     * Bad request - invalid year format
+     */
+    400: PersonRestError;
+    /**
+     * Internal server error
+     */
+    500: PersonRestError;
+};
+
+export type ListVolunteersError = ListVolunteersErrors[keyof ListVolunteersErrors];
+
+export type ListVolunteersResponses = {
+    /**
+     * List of volunteers retrieved successfully
+     */
+    200: VolunteersListVolunteersResponse;
+};
+
+export type ListVolunteersResponse = ListVolunteersResponses[keyof ListVolunteersResponses];
 
 export type GetVolunteerByPersonData = {
     body?: never;
