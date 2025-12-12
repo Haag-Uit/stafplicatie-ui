@@ -53,6 +53,7 @@ import { ref, onMounted, computed } from "vue";
 import { useToastStore } from "@/stores/toastr";
 import { UserSearch } from "lucide-vue-next";
 import { useRouter } from "vue-router";
+import { getActiveCampyear } from "@/campyear-api";
 import VolunteersTableRow from "@/components/volunteers/VolunteersTableRow.vue";
 import {
   listVolunteers,
@@ -94,7 +95,22 @@ const filteredVolunteers = computed(() => {
 });
 
 const fetchVolunteers = async () => {
-  const { data, error } = await listVolunteers();
+  const campyearResp = await getActiveCampyear();
+  if (campyearResp.error) {
+    console.error("Error fetching active camp year:", cmperror);
+    toastStore.addToast({
+      message: "Fout bij het ophalen van het actieve kampjaar.",
+      type: "error",
+    });
+    return;
+  }
+  console.log("Active camp year:", campyearResp.data);
+  const { data, error } = await listVolunteers({
+    path: {
+      year: campyearResp.data.campyear!.year,
+    },
+  });
+
   if (error) {
     console.error("Error fetching volunteers:", error);
     toastStore.addToast({
@@ -103,7 +119,7 @@ const fetchVolunteers = async () => {
     });
     return;
   }
-  if (data.volunteers) {
+  if (data.volunteers.length > 0) {
     const ids = data.volunteers.map((v) => v.personId);
     const persons = await getPersonsByIds({
       body: { ids },
