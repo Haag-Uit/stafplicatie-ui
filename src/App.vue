@@ -6,7 +6,7 @@ import { client as haagAuthClient } from "@/haag-auth-api/client.gen";
 import { client as relationsClient } from "@/relations-api/client.gen";
 import { client as volunteersClient } from "@/volunteers-api/client.gen";
 import { client as campyearClient } from "@/campyear-api/client.gen";
-import { CalendarDays, LayoutDashboard, Users } from "lucide-vue-next";
+import { CalendarDays, LayoutDashboard, Users, ClipboardCheck } from "lucide-vue-next";
 import SidebarFooter from "./components/layout/SidebarFooter.vue";
 import ToastrContainer from "./components/ToastrContainer.vue";
 const auth0 = useAuth0();
@@ -145,6 +145,11 @@ watch(
                 <li>
                   <RouterLink to="/medewerker"
                     ><Users /> Medewerkers
+                  </RouterLink>
+                </li>
+                <li>
+                  <RouterLink to="/medewerker/aanwezigheid"
+                    ><ClipboardCheck /> Aanwezigheid
                   </RouterLink>
                 </li>
               </ul>

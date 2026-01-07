@@ -14,6 +14,7 @@ import VolunteerIndex from "@/views/volunteer/VolunteerIndex.vue";
 import VolunteerView from "@/views/volunteer/VolunteerView.vue";
 import VolunteerForm from "@/views/volunteer/VolunteerFormView.vue";
 import VolunteerPersonSearch from "@/views/volunteer/VolunteerPersonSearch.vue";
+import AttendanceIndex from "@/views/volunteer/attendance/AttendanceIndex.vue";
 
 export function createVueRouter(app: App): Router {
   return createRouter({
@@ -73,6 +74,12 @@ export function createVueRouter(app: App): Router {
         path: "/medewerker",
         name: "volunteerIndex",
         component: VolunteerIndex,
+        beforeEnter: createAuthGuard(app),
+      },
+      {
+        path: "/medewerker/aanwezigheid",
+        name: "attendanceIndex",
+        component: AttendanceIndex,
         beforeEnter: createAuthGuard(app),
       },
       {
