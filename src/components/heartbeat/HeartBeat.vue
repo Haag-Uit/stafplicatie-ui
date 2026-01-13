@@ -9,7 +9,10 @@ const eventStreamStore = useEventStreamStore();
 const determineStatus = () => {
   const now = new Date();
   const diff = now.getTime() - eventStreamStore.lastHeartbeat;
-  online.value = diff < 120000; // 120 seconds threshold
+  online.value = diff < 1200000; // 120 seconds threshold
+  if (!online.value) {
+    eventStreamStore.reconnect();
+  }
 };
 
 onMounted(() => {

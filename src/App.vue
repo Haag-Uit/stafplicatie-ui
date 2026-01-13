@@ -17,7 +17,6 @@ const clientReady = ref(false);
 const auth0Error = ref({});
 
 const eventStream = useEventStreamStore();
-eventStream.connect(import.meta.env.VITE_HUBJE_API_URL, accessToken);
 
 const initiateClient = async () => {
   try {
@@ -57,6 +56,7 @@ const initiateClient = async () => {
       },
     });
 
+    eventStream.connect(import.meta.env.VITE_HUBJE_API_URL, accessToken);
 
     clientReady.value = true;
   } catch (error) {
