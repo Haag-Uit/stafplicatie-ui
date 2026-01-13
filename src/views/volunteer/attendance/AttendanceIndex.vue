@@ -45,8 +45,6 @@
 <script setup lang="ts">
 import { ref, onMounted, computed } from "vue";
 import { useToastStore } from "@/stores/toastr";
-import { UserSearch } from "lucide-vue-next";
-import { useRouter } from "vue-router";
 import { getActiveCampyear } from "@/campyear-api";
 import AttendanceTableRow from "@/components/volunteers/attendance/AttendanceTableRow.vue";
 import {
@@ -56,7 +54,6 @@ import {
 import { getPersonsByIds, type PersonPersonResponse } from "@/relations-api";
 
 const toastStore = useToastStore();
-const router = useRouter();
 
 type VolunteerRow = VolunteersVolunteerResponse & {
   person: PersonPersonResponse;
@@ -64,7 +61,6 @@ type VolunteerRow = VolunteersVolunteerResponse & {
 
 const volunteers = ref<VolunteerRow[]>([]);
 const loading = ref(true);
-const searchQuery = ref("");
 
 const sortVolunteers = (volunteers: VolunteerRow[]) => {
   return volunteers.slice(0).sort((a, b) => {

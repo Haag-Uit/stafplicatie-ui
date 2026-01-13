@@ -2,12 +2,10 @@
 import type { PersonPersonResponse } from "@/relations-api";
 import { useToastStore } from "@/stores/toastr";
 import {
-  deleteVolunteer,
   updateAttendance,
   type VolunteersVolunteerResponse,
   type UpdateAttendanceData,
 } from "@/volunteers-api";
-import { CircleQuestionMark, CircleX, CircleSlash, CircleCheck } from "lucide-vue-next";
 import { type PropType, ref } from "vue";
 import MeetingAttendancePicker from "@/components/volunteers/attendance/MeetingAttendancePicker.vue";
 
