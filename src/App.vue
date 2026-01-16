@@ -9,9 +9,13 @@ import { client as campyearClient } from "@/campyear-api/client.gen";
 import { CalendarDays, LayoutDashboard, Users, ClipboardCheck } from "lucide-vue-next";
 import SidebarFooter from "./components/layout/SidebarFooter.vue";
 import ToastrContainer from "./components/ToastrContainer.vue";
-const auth0 = useAuth0();
+import HeartBeat from "./components/heartbeat/HeartBeat.vue";
+import { useEventStreamStore } from "./stores/eventstream";
 
+const auth0 = useAuth0();
 const clientReady = ref(false);
+
+const eventStream = useEventStreamStore();
 
 const initiateClient = async () => {
   try {
@@ -50,6 +54,8 @@ const initiateClient = async () => {
         Authorization: `Bearer ${accessToken}`,
       },
     });
+
+    eventStream.connect(import.meta.env.VITE_HUBJE_API_URL, accessToken);
 
     clientReady.value = true;
   } catch (error) {
@@ -229,6 +235,7 @@ watch(
       </main>
     </div>
     <ToastrContainer />
+    <HeartBeat />
   </div>
 </template>
 

@@ -4,7 +4,7 @@ import { ref, watch } from "vue";
 
 const props = defineProps({
   volunteerId: {
-    type: String,
+    type: Number,
     required: true,
   },
   meeting: {
