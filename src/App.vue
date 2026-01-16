@@ -14,7 +14,6 @@ import { useEventStreamStore } from "./stores/eventstream";
 
 const auth0 = useAuth0();
 const clientReady = ref(false);
-const auth0Error = ref({});
 
 const eventStream = useEventStreamStore();
 
