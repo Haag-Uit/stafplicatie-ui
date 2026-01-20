@@ -17,7 +17,7 @@ const clientReady = ref(false);
 
 const eventStream = useEventStreamStore();
 
-const setupInterceptor = (apiClient: typeof client) => {
+const setupInterceptor = (apiClient: { interceptors: { response: { use: (fn: any) => void } } }) => {
   apiClient.interceptors.response.use((response) => {
     if (response.status === 401) {
       auth0.loginWithRedirect();
