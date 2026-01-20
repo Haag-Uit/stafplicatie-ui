@@ -25,7 +25,7 @@ const setupInterceptor = (apiClient: {
   } 
 }) => {
   apiClient.interceptors.response.use((response, request, options) => {
-    if (response.status === 401) {
+    if (response.status === 401 && auth0.loginWithRedirect) {
       auth0.loginWithRedirect().catch((error) => {
         console.error("Failed to redirect to login:", error);
       });
