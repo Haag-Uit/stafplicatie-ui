@@ -17,8 +17,14 @@ const clientReady = ref(false);
 
 const eventStream = useEventStreamStore();
 
-const setupInterceptor = (apiClient: { interceptors: { response: { use: (fn: (response: Response) => Response | Promise<Response>) => void } } }) => {
-  apiClient.interceptors.response.use((response) => {
+const setupInterceptor = (apiClient: { 
+  interceptors: { 
+    response: { 
+      use: (fn: (response: Response, request: Request, options: unknown) => Response | Promise<Response>) => void 
+    } 
+  } 
+}) => {
+  apiClient.interceptors.response.use((response, request, options) => {
     if (response.status === 401) {
       auth0.loginWithRedirect().catch((error) => {
         console.error("Failed to redirect to login:", error);
