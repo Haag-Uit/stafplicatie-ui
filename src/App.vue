@@ -14,6 +14,7 @@ import { useEventStreamStore } from "./stores/eventstream";
 
 const auth0 = useAuth0();
 const clientReady = ref(false);
+const isRedirecting = ref(false);
 
 const eventStream = useEventStreamStore();
 
@@ -25,9 +26,11 @@ const setupInterceptor = (apiClient: {
   } 
 }) => {
   apiClient.interceptors.response.use((response, request, options) => {
-    if (response.status === 401 && auth0.loginWithRedirect) {
+    if (response.status === 401 && auth0.loginWithRedirect && !isRedirecting.value) {
+      isRedirecting.value = true;
       auth0.loginWithRedirect().catch((error) => {
         console.error("Failed to redirect to login:", error);
+        isRedirecting.value = false;
       });
     }
     return response;
