@@ -17,6 +17,15 @@ const clientReady = ref(false);
 
 const eventStream = useEventStreamStore();
 
+const setupInterceptor = (apiClient: typeof client) => {
+  apiClient.interceptors.response.use((response) => {
+    if (response.status === 401) {
+      auth0.loginWithRedirect();
+    }
+    return response;
+  });
+};
+
 const initiateClient = async () => {
   try {
     const accessToken = await auth0.getAccessTokenSilently();
@@ -26,6 +35,7 @@ const initiateClient = async () => {
         Authorization: `Bearer ${accessToken}`,
       },
     });
+    setupInterceptor(client);
 
     haagAuthClient.setConfig({
       baseUrl: import.meta.env.VITE_HAAG_AUTH_API_URL,
@@ -33,6 +43,7 @@ const initiateClient = async () => {
         Authorization: `Bearer ${accessToken}`,
       },
     });
+    setupInterceptor(haagAuthClient);
 
     relationsClient.setConfig({
       baseUrl: import.meta.env.VITE_HUP_API_URL,
@@ -40,6 +51,7 @@ const initiateClient = async () => {
         Authorization: `Bearer ${accessToken}`,
       },
     });
+    setupInterceptor(relationsClient);
 
     volunteersClient.setConfig({
       baseUrl: import.meta.env.VITE_VOLUNTEERS_API_URL,
@@ -47,6 +59,7 @@ const initiateClient = async () => {
         Authorization: `Bearer ${accessToken}`,
       },
     });
+    setupInterceptor(volunteersClient);
 
     campyearClient.setConfig({
       baseUrl: import.meta.env.VITE_CAMPYEAR_API_URL,
@@ -54,6 +67,7 @@ const initiateClient = async () => {
         Authorization: `Bearer ${accessToken}`,
       },
     });
+    setupInterceptor(campyearClient);
 
     eventStream.connect(import.meta.env.VITE_HUBJE_API_URL, accessToken);
 
