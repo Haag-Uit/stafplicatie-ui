@@ -14,8 +14,28 @@ import { useEventStreamStore } from "./stores/eventstream";
 
 const auth0 = useAuth0();
 const clientReady = ref(false);
+const isRedirecting = ref(false);
 
 const eventStream = useEventStreamStore();
+
+const setupInterceptor = (apiClient: { 
+  interceptors: { 
+    response: { 
+      use: (fn: (response: Response) => Response | Promise<Response>) => void 
+    } 
+  } 
+}) => {
+  apiClient.interceptors.response.use((response) => {
+    if (response.status === 401 && auth0.loginWithRedirect && !isRedirecting.value) {
+      isRedirecting.value = true;
+      auth0.loginWithRedirect().catch((error) => {
+        console.error("Failed to redirect to login:", error);
+        isRedirecting.value = false;
+      });
+    }
+    return response;
+  });
+};
 
 const initiateClient = async () => {
   try {
@@ -26,6 +46,7 @@ const initiateClient = async () => {
         Authorization: `Bearer ${accessToken}`,
       },
     });
+    setupInterceptor(client);
 
     haagAuthClient.setConfig({
       baseUrl: import.meta.env.VITE_HAAG_AUTH_API_URL,
@@ -33,6 +54,7 @@ const initiateClient = async () => {
         Authorization: `Bearer ${accessToken}`,
       },
     });
+    setupInterceptor(haagAuthClient);
 
     relationsClient.setConfig({
       baseUrl: import.meta.env.VITE_HUP_API_URL,
@@ -40,6 +62,7 @@ const initiateClient = async () => {
         Authorization: `Bearer ${accessToken}`,
       },
     });
+    setupInterceptor(relationsClient);
 
     volunteersClient.setConfig({
       baseUrl: import.meta.env.VITE_VOLUNTEERS_API_URL,
@@ -47,6 +70,7 @@ const initiateClient = async () => {
         Authorization: `Bearer ${accessToken}`,
       },
     });
+    setupInterceptor(volunteersClient);
 
     campyearClient.setConfig({
       baseUrl: import.meta.env.VITE_CAMPYEAR_API_URL,
@@ -54,6 +78,7 @@ const initiateClient = async () => {
         Authorization: `Bearer ${accessToken}`,
       },
     });
+    setupInterceptor(campyearClient);
 
     eventStream.connect(import.meta.env.VITE_HUBJE_API_URL, accessToken);
 
