@@ -25,8 +25,7 @@ const setupInterceptor = (apiClient: {
     } 
   } 
 }) => {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  apiClient.interceptors.response.use((response, _request, _options) => {
+  apiClient.interceptors.response.use((response) => {
     if (response.status === 401 && auth0.loginWithRedirect && !isRedirecting.value) {
       isRedirecting.value = true;
       auth0.loginWithRedirect().catch((error) => {
