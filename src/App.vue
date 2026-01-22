@@ -21,7 +21,7 @@ const eventStream = useEventStreamStore();
 const setupInterceptor = (apiClient: { 
   interceptors: { 
     response: { 
-      use: (fn: (response: Response, request: Request, options: unknown) => Response | Promise<Response>) => void 
+      use: (fn: (response: Response) => Response | Promise<Response>) => void 
     } 
   } 
 }) => {
