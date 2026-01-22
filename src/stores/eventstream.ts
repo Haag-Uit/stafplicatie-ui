@@ -23,6 +23,15 @@ export const useEventStreamStore = defineStore("eventStream", () => {
     });
   }
 
+  function onMessagePublished(event: MessageEvent) {
+    console.log("Message published event received:", event.data);
+    const toastrStore = useToastStore();
+    toastrStore.addToast({
+      type: "info",
+      message: "New message published: " + event.data,
+    });
+  }
+
   // Generic handler for errors
   function onError(err: Event) {
     // Optionally, you could trigger a reconnect here
@@ -42,21 +51,12 @@ export const useEventStreamStore = defineStore("eventStream", () => {
     await initiate();
   }
 
-  async function reconnect() {
-    if (!baseUrl.value || !token.value) {
-      throw new Error("Cannot reconnect: baseUrl or token is missing");
-    }
-    if (eventSrc.value) {
-      eventSrc.value.close();
-    }
-    await initiate();
-  }
-
   async function initiate() {
     eventSrc.value = new EventSource(baseUrl.value + "/sse?token=" + token.value);
 
     eventSrc.value.addEventListener("heartbeat", onHeartbeat);
     eventSrc.value.addEventListener("registration", onRegistration);
+    eventSrc.value.addEventListener("message_published", onMessagePublished);
     eventSrc.value.onerror = onError;
   }
 
@@ -71,8 +71,7 @@ export const useEventStreamStore = defineStore("eventStream", () => {
     eventSrc,
     lastHeartbeat,
     connect,
-    reconnect,
-    disconnect,
+    disconnect
   };
 });
 
