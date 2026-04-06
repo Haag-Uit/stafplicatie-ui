@@ -56,7 +56,7 @@ jobs:
         # this step uses [docker/metadata-action](https://github.com/docker/metadata-action#about) to extract tags and labels that will be applied to the specified image. the `id` "meta" allows the output of this step to be referenced in a subsequent step. the `images` value provides the base name for the tags and labels.
       - name: extract metadata (tags, labels) for docker
         id: meta
-        uses: docker/metadata-action@v5
+        uses: docker/metadata-action@v6
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           tags: |
