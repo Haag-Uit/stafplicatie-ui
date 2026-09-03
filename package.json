@@ -35,7 +35,7 @@
   },
   "devDependencies": {
     "@hey-api/openapi-ts": "^0.95.0",
-    "@pinia/testing": "^1.0.2",
+    "@pinia/testing": "^2.0.0",
     "@playwright/test": "^1.51.1",
     "@tsconfig/node24": "^24.0.0",
     "@types/jsdom": "^28.0.0",
